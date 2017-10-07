@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+  <body>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function draw(myLink, ctx) {
+        ctx.beginPath();
+        ctx.rect(-myLink.off, -myLink.off, myLink.width+2*myLink.off, 2*myLink.off);
+        ctx.fillStyle = myLink.color;
+        ctx.fill();
+        ctx.lineWidth = myLink.borderWidth;
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+        ctx.beginPath();        
+        ctx.arc(0,0,myLink.borderWidth/2,0,Math.PI*2,true);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.beginPath();        
+        ctx.arc(myLink.width,0,myLink.borderWidth/2,0,Math.PI*2,true);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+      function animate(aLink, bLink, cLink, dLink, eLink,beLink, ceLink, canvas, ctx, startTime) {
+         // update
+        var time = (new Date()).getTime() - startTime;
+
+        var t = time / 50;
+        
+		
+		// TODO: pradzia pakeisti nepatinka man jinai.
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // store initial coordinates
+        ctx.save(); // [M0]
+        ctx.save(); // [M0,M0]
+        ctx.translate(canvas.width/2+100,canvas.height/2);
+		var th1 = Math.PI/180*t
+		ctx.rotate(th1); 
+		
+        ctx.restore();  // M0 [M0]		
+        ctx.translate(canvas.width/2-100,canvas.height/2);
+		ctx.save();  // [M1,M0]
+		ctx.save();
+		alpha = -th1;
+		ctx.rotate(alpha);
+		draw(aLink, ctx);
+		
+        var BD = Math.sqrt(aLink.width*aLink.width + cLink.width*cLink.width - 2*aLink.width*cLink.width*Math.cos(alpha));
+		var theta = Math.acos((BD*BD + aLink.width*aLink.width - bLink.width*bLink.width)/(2*BD*aLink.width));		
+		var beta = Math.acos(( cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
+		var gamma = Math.acos((aLink.width*aLink.width + cLink.width*cLink.width - BD*BD)/(2*aLink.width*cLink.width));
+	
+		
+
+		ctx.restore();  // M0 [M0]		
+        ctx.translate(cLink.width,0);
+		alpha = -Math.PI/180*t;
+		
+		///pasukimai skirti nupiesti
+	    if (((Math.PI/180*t)%(Math.PI*2))>Math.PI){
+		
+		 
+		}
+		else{
+			ctx.rotate(alpha); //CD
+			draw(bLink, ctx);  
+		}
+	
+        ctx.restore(); // M1 [M0] 
+        draw(cLink, ctx); // AD
+        ctx.restore(); // M0 [] 
+        ctx.restore(); // M0 [] 
+        requestAnimFrame(function() {
+          animate(aLink, bLink, cLink, dLink, eLink, beLink, ceLink, canvas, ctx, startTime);
+        });
+      }
+      var canvas = document.getElementById('myCanvas');
+      var ctx = canvas.getContext('2d');
+
+      var aLink = {  // AB, BC
+        color: '#8ED6FF',
+        width: 200,
+        off: 10,
+        borderWidth: 4
+      };
+
+      var bLink = { // CD
+        color: '#FF8ED6',
+        width: 250,
+        off: 10,
+        borderWidth: 4
+      };
+	  
+	  var cLink = { // DC
+        color: 'green',
+        width: 150,
+        off: 10,
+        borderWidth: 4
+      };
+
+      var dLink = { // BF
+		color: 'cyan',
+		width: 100,
+		off: 10,
+       borderWidth: 4
+      };
+	  
+	  var eLink = { // EF
+		color: 'cyan',
+		width: 200,
+		off: 10,
+       borderWidth: 4
+      };
+	  
+	 var beLink = { // BE
+		color: 'cyan',
+		width: 100,
+		off: 10,
+       borderWidth: 4
+      };
+	 
+	var ceLink = { // CE
+		color: 'cyan',
+		width: 100,
+	    off: 10,
+       borderWidth: 4
+      };
+	  
+      //draw(myLink, ctx);
+
+      // wait one second before starting animation
+//      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(aLink, bLink, cLink, dLink, eLink, beLink, ceLink, canvas, ctx, startTime);
+//      }, 1000);
+    </script>
+</body>
+</html>
+
