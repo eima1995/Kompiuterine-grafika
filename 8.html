@@ -54,28 +54,69 @@
 		draw(aLink, ctx);
 		
         var BD = Math.sqrt(aLink.width*aLink.width + cLink.width*cLink.width - 2*aLink.width*cLink.width*Math.cos(alpha));
-		var theta = Math.acos((BD*BD + aLink.width*aLink.width - bLink.width*bLink.width)/(2*BD*aLink.width));		
+	    //console.log("BD = " + BD);
+		
+		var theta = Math.acos((BD*BD + aLink.width*aLink.width - cLink.width*cLink.width)/(2*BD*aLink.width));
+		
 		var beta = Math.acos(( cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
+		
 		var gamma = Math.acos((aLink.width*aLink.width + cLink.width*cLink.width - BD*BD)/(2*aLink.width*cLink.width));
+		
+		var delta = Math.acos((BD*BD + bLink.width*bLink.width - aLink.width * aLink.width)/(2*BD*bLink.width));
+		
+		var tau = Math.acos((BD*BD + aLink.width*aLink.width - bLink.width * bLink.width)/(2*BD*aLink.width));
 	
+	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
+		
+	    if (((th1)%(Math.PI*2)) > Math.PI){
+		// uz apacios veikima atsakingas
+		/*
+			ctx.rotate(Math.PI+theta);
+			cLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
+			draw(cLink, ctx); // zalia BD piesia
+			ctx.rotate(-beta);	
+		    draw(bLink, ctx);  // BC
+			*/
+		}else{ // virsaus veikimas
+		    ctx.save();
+		    ctx.rotate(Math.PI - theta); // neaisku kam reikia PI - theta
+			dLink.width = BD;
+		   	draw(dLink, ctx);// BD piesia
+			ctx.restore();
+			ctx.rotate(/*-Math.PI+theta + */gamma);
+			draw(aLink, ctx); // BC
+			draw(aLink,ctx);       // BF (turetu buti reguliuojamas)
+			ctx.save();
+			/*
+			ctx.rotate(-psi);
+			beLink.width = BE;
+			draw(beLink,ctx);
+			ctx.restore();
+			ctx.save();
+			ctx.translate(dLink.width,0);
+			ctx.rotate(-Math.PI/2);
+			draw(eLink,ctx);   // EF
+			ctx.restore();
+			// CE piesia
+			ctx.translate(bLink.width,0);
+			ctx.rotate(Math.PI + fce);
+            draw(ceLink, ctx);
+			*/
+		}
 		
 
 		ctx.restore();  // M0 [M0]		
-        ctx.translate(cLink.width,0);
-		alpha = -Math.PI/180*t;
 		
-		///pasukimai skirti nupiesti
-	    if (((Math.PI/180*t)%(Math.PI*2))>Math.PI){
-		
-		 
-		}
-		else{
-			ctx.rotate(alpha); //CD
-			draw(bLink, ctx);  
-		}
-	
         ctx.restore(); // M1 [M0] 
         draw(cLink, ctx); // AD
+		
+		ctx.save();
+		ctx.translate(cLink.width, 0);
+		ctx.rotate(alpha);
+		draw(bLink, ctx); // DC
+		
+		
+		ctx.restore();
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
@@ -99,14 +140,14 @@
         borderWidth: 4
       };
 	  
-	  var cLink = { // DC
+	  var cLink = { // AD
         color: 'green',
         width: 150,
         off: 10,
         borderWidth: 4
       };
 
-      var dLink = { // BF
+      var dLink = { // BD 
 		color: 'cyan',
 		width: 100,
 		off: 10,
