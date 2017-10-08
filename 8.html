@@ -29,41 +29,35 @@
         ctx.fill();
       }
       function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
-         // update
-        var time = (new Date()).getTime() - startTime;
+		var time = (new Date()).getTime() - startTime;
+        var t = time / 10;
+        // if (Math.floor((t/360))%2==1) {
+        //   t=-t;
+        // }
 
-        var t = time / 50;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // store initial coordinates
         ctx.save(); // [M0]
-        ctx.save(); // [M0,M0]
-        ctx.translate(canvas.width/2 + 50,canvas.height/2); // pataisyti reikes logiskiau
-		var alpha = - Math.PI/180*t
-		ctx.rotate(alpha); 
-        draw(bLink, ctx);
-		
-        ctx.restore();  // M0 [M0]		
-        ctx.translate(canvas.width/2-100,canvas.height/2);
+
+        ctx.translate(canvas.width/2-100, canvas.height/2);
 		ctx.save();  // [M1,M0]
-		ctx.save();
-		//alpha = -th1;
-		//ctx.rotate(alpha);
-		//draw(bLink, ctx);
+	    
+        alfa = - Math.PI/180*t; // kad, kita puse suktusi
+		ctx.rotate(alfa);
+        draw(bLink, ctx);
+
+        if (Math.floor((alfa / Math.PI) % 2) == 0) {
+			console.log("Virsus");
+        }else{
+			console.log("Apacia");
+		}
 		
-		
-		
-		
-		
-		
-		
-        ctx.translate(aLink.width,0);
-		ctx.restore();
-		
-		
-        ctx.restore(); // M1 [M0] 
-        draw(cLink, ctx); // AD
-        ctx.restore(); // M0 [] 
+        ctx.restore(); // M1 [M0]
+		ctx.translate(-cLink.width,0);
+        draw(cLink, ctx) //AD
+        ctx.restore(); // M0 [] //pradzios koordinates grazinamos
+		;
+        // request new frame
         requestAnimFrame(function() {
           animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
@@ -89,7 +83,7 @@
         off: 10,
         borderWidth: 4
       };
-      var dLink = { // BD 
+      var dLink = { // AC
 		color: 'cyan',
 		width: 100,
 		off: 10,
