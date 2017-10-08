@@ -35,7 +35,7 @@
         
 		
 		// TODO: pradzia pakeisti nepatinka man jinai.
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //ctx.clearRect(0, 0, canvas.width, canvas.height);
         // store initial coordinates
         ctx.save(); // [M0]
         ctx.save(); // [M0,M0]
@@ -68,26 +68,43 @@
 		
 		
 		
-		// trikampio kabinimas
+		// trikampio skaiciavimai
 		var BE = Math.sqrt(bfLink.width * bfLink.width + efLink.width * efLink.width); // BF^2 + EF^2
 		var ebf = Math.acos((BE * BE + bfLink.width * bfLink.width - efLink.width *  efLink.width) / (2 * BE * bfLink.width)); // kampas EBF
 		var FC = aLink.width - bfLink.width;
 		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
-		
 		var fce = Math.acos((FC * FC + ceLink.width * ceLink.width - efLink.width *  efLink.width) / (2 * FC * ceLink.width)); // kampas FCE
 		
 	    if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
-		/*
 			ctx.rotate(Math.PI+theta);
-			cLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
-			draw(cLink, ctx); // zalia BD piesia
-			ctx.rotate(-beta);	
-		    draw(bLink, ctx);  // BC
-			*/
+			dLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
+			draw(dLink, ctx); // zalia BD piesia
+			ctx.rotate(-beta);	///////// speju negeras kampas
+		
+		 	draw(aLink, ctx);  // BC
+			ctx.save();
+			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
+			
+			ctx.save();
+			ctx.rotate(-ebf);
+			beLink.width = BE;
+			draw(beLink,ctx);
+			ctx.restore();
+			
+			ctx.save();
+			ctx.translate(bfLink.width,0);
+			ctx.rotate(-Math.PI/2);
+			draw(efLink,ctx);   // EF
+			ctx.restore();
+	
+			ctx.translate(aLink.width,0);
+			ctx.rotate(Math.PI + fce);
+            draw(ceLink, ctx); // CE piesia
+
 		}else{ // virsaus veikimas
 		    ctx.save();
-		    ctx.rotate(Math.PI - theta); // neaisku kam reikia PI - theta
+		    ctx.rotate(Math.PI - theta); //PI - theta
 			dLink.width = BD;
 		   	draw(dLink, ctx);// BD piesia
 			ctx.restore();
