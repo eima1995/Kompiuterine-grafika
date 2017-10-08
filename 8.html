@@ -46,8 +46,8 @@
 		ctx.rotate(alfa);
         draw(bLink, ctx);
 		
-		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alpha));
-		
+		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alfa));
+		var theta = Math.acos((AC*AC + cLink.width*cLink.width - bLink.width*bLink.width)/(2*AC*cLink.width));
 		
 
         if (Math.floor((-alfa / Math.PI) % 2) == 0) {
