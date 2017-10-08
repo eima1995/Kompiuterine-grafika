@@ -83,7 +83,7 @@
 			dLink.width = BD;
 		   	draw(dLink, ctx);// BD piesia
 			ctx.restore();
-			ctx.rotate(-Math.PI + theta + tau);
+			ctx.rotate(-(theta + tau) + Math.PI);
 			draw(aLink, ctx); // BC
 			ctx.save();
 			/*
@@ -110,19 +110,18 @@
         draw(cLink, ctx); // AD
         
 		//ctx.save()
-		var psi = Math.PI - beta - delta;
+		var psi =  0; 
 		if (((th1)%(Math.PI*2)) > Math.PI){ // apacia
-		/*
-		    psi = -psi * th1;
+		    psi = Math.PI - beta - delta;
 		    //ctx.save();
 			ctx.translate(cLink.width, 0);
-			ctx.rotate(psi);
+			ctx.rotate(-psi);
 			draw(bLink, ctx); // DC
 			//ctx.restore();
-			*/
 		}else{ // virsus
 			//ctx.save();
-			psi = -psi /* th1;*/;
+			psi = Math.PI - beta - delta;
+			psi = -psi;
 			ctx.translate(cLink.width, 0);
 			ctx.rotate(psi);
 			draw(bLink, ctx); // DC
