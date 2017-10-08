@@ -46,24 +46,33 @@
 		ctx.rotate(alfa);
         draw(bLink, ctx);
 		
-		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alfa));
+		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(alfa));
 		var theta = Math.acos((AC*AC + cLink.width*cLink.width - bLink.width*bLink.width)/(2*AC*cLink.width));
 		
 
-        if (Math.floor((-alfa / Math.PI) % 2) == 0) {
-			console.log("Virsus");
-        }else{
-			console.log("Apacia");
-		}
+        
 		
         ctx.restore(); // M1 [M0]
 		ctx.translate(-cLink.width,0);
+		draw(cLink, ctx) //AD
+		
+		if(((Math.PI/180*t)%(Math.PI*2)) < Math.PI){
+			console.log("Virsus" + alfa);
+			ctx.rotate(theta);
+		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
+			draw(cLink, ctx);
+        }else{
+			ctx.rotate(theta);
+		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
+			draw(cLink, ctx);
+			console.log("Apacia" + alfa);
+		}
 		
 		///mintis cia kabinti visas likusias dalis
 		
 		
 		
-        draw(cLink, ctx) //AD
+       
         ctx.restore(); // M0 [] //pradzios koordinates grazinamos
 		;
         // request new frame
