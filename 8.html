@@ -31,10 +31,6 @@
       function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
 		var time = (new Date()).getTime() - startTime;
         var t = time / 10;
-        // if (Math.floor((t/360))%2==1) {
-        //   t=-t;
-        // }
-
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save(); // [M0]
@@ -48,6 +44,7 @@
 		
 		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alfa));
 		var theta = Math.acos((AC*AC + cLink.width*cLink.width - bLink.width*bLink.width)/(2*AC*cLink.width));
+		var gamma = Math.acos((AC*AC + aLink.width*aLink.width - aLink.width*aLink.width)/(2*aLink.width*AC));
 		
 
         
@@ -57,22 +54,25 @@
 		draw(cLink, ctx) //AD
 		
 		if(((Math.PI/180*t)%(Math.PI*2)) < Math.PI){
-			console.log("Virsus" + alfa);
+			//console.log("Virsus" + alfa);
 			ctx.rotate(-theta);
 		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
 			draw(dLink, ctx);
+			
+			ctx.rotate(-gamma);
+			draw(aLink, ctx);  // AB
+			
+			
         }else{
+		    //console.log("Apacia" + alfa);
 			ctx.rotate(theta);
 		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
 			draw(dLink, ctx);
-			console.log("Apacia" + alfa);
+			
+			ctx.rotate(gamma);
+			draw(aLink, ctx);  // AB
 		}
-		
-		///mintis cia kabinti visas likusias dalis
-		
-		
-		
-       
+		       
         ctx.restore(); // M0 [] //pradzios koordinates grazinamos
 		;
         // request new frame
