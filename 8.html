@@ -46,7 +46,7 @@
 		ctx.rotate(alfa);
         draw(bLink, ctx);
 
-        if (Math.floor((alfa / Math.PI) % 2) == 0) {
+        if (Math.floor((-alfa / Math.PI) % 2) == 0) {
 			console.log("Virsus");
         }else{
 			console.log("Apacia");
@@ -54,6 +54,11 @@
 		
         ctx.restore(); // M1 [M0]
 		ctx.translate(-cLink.width,0);
+		
+		///mintis cia kabinti visas likusias dalis
+		
+		
+		
         draw(cLink, ctx) //AD
         ctx.restore(); // M0 [] //pradzios koordinates grazinamos
 		;
