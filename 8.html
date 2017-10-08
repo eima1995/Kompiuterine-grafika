@@ -3,7 +3,7 @@
 <head>
 </head>
   <body>
-    <canvas id="myCanvas" width="800" height="800"></canvas>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
     <script>
       window.requestAnimFrame = (function(callback) {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -11,7 +11,6 @@
           window.setTimeout(callback, 1000 / 60);
         };
       })();
-
       function draw(myLink, ctx) {
         ctx.beginPath();
         ctx.rect(-myLink.off, -myLink.off, myLink.width+2*myLink.off, 2*myLink.off);
@@ -29,10 +28,9 @@
         ctx.fillStyle = 'white';
         ctx.fill();
       }
-      function animate(aLink, bLink, cLink, dLink, eLink,beLink, ceLink, canvas, ctx, startTime) {
+      function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
          // update
         var time = (new Date()).getTime() - startTime;
-
         var t = time / 50;
         
 		
@@ -68,6 +66,16 @@
 	
 	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
 		
+		
+		
+		// trikampio kabinimas
+		var BE = Math.sqrt(bfLink.width * bfLink.width + efLink.width * efLink.width); // BF^2 + EF^2
+		var ebf = Math.acos((BE * BE + bfLink.width * bfLink.width - efLink.width *  efLink.width) / (2 * BE * bfLink.width)); // kampas EBF
+		var FC = aLink.width - bfLink.width;
+		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
+		
+		var fce = Math.acos((FC * FC + ceLink.width * ceLink.width - efLink.width *  efLink.width) / (2 * FC * ceLink.width)); // kampas FCE
+		
 	    if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 		/*
@@ -85,66 +93,61 @@
 			ctx.restore();
 			ctx.rotate(-(theta + tau) + Math.PI);
 			draw(aLink, ctx); // BC
+			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
+			
 			ctx.save();
-			/*
-			ctx.rotate(-psi);
+			ctx.rotate(-ebf);
 			beLink.width = BE;
 			draw(beLink,ctx);
 			ctx.restore();
+			
 			ctx.save();
-			ctx.translate(dLink.width,0);
+			ctx.translate(bfLink.width,0);
 			ctx.rotate(-Math.PI/2);
-			draw(eLink,ctx);   // EF
+			draw(efLink,ctx);   // EF
 			ctx.restore();
-			// CE piesia
-			ctx.translate(bLink.width,0);
+	
+			ctx.translate(aLink.width,0);
 			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx);
-			*/
+            draw(ceLink, ctx); // CE piesia
+		
 		}
 		
-
 		ctx.restore();  // M0 [M0]		
 		
         ctx.restore(); // M1 [M0] 
         draw(cLink, ctx); // AD
         
-		//ctx.save()
-		var psi =  0; 
-		if (((th1)%(Math.PI*2)) > Math.PI){ // apacia
-		    psi = Math.PI - beta - delta;
-		    //ctx.save();
-			ctx.translate(cLink.width, 0);
-			ctx.rotate(-psi);
-			draw(bLink, ctx); // DC
-			//ctx.restore();
-		}else{ // virsus
-			//ctx.save();
-			psi = Math.PI - beta - delta;
-			psi = -psi;
-			ctx.translate(cLink.width, 0);
-			ctx.rotate(psi);
-			draw(bLink, ctx); // DC
-			//ctx.restore();
-		}
+		
+		// DC piesimas
+		var psi = Math.PI - beta - delta;
+		psi = -psi;
+		ctx.translate(cLink.width, 0);
+		ctx.rotate(psi);
+		draw(bLink, ctx); // DC
+		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+			console.log("PSI" + psi);
+		 
+		 
+		}else{		 
+	    }
+		
 	
 		
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
-          animate(aLink, bLink, cLink, dLink, eLink, beLink, ceLink, canvas, ctx, startTime);
+          animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
       }
       var canvas = document.getElementById('myCanvas');
       var ctx = canvas.getContext('2d');
-
       var aLink = {  // AB, BC
         color: '#8ED6FF',
         width: 200,
         off: 10,
         borderWidth: 4
       };
-
       var bLink = { // CD
         color: '#FF8ED6',
         width: 250,
@@ -158,7 +161,6 @@
         off: 10,
         borderWidth: 4
       };
-
       var dLink = { // BD 
 		color: 'cyan',
 		width: 100,
@@ -166,7 +168,15 @@
        borderWidth: 4
       };
 	  
-	  var eLink = { // EF
+	  var bfLink = { // BF
+		color: 'cyan',
+		width: 100,
+		off: 10,
+       borderWidth: 4
+      };
+	  
+	  
+	  var efLink = { // EF
 		color: 'cyan',
 		width: 200,
 		off: 10,
@@ -188,13 +198,11 @@
       };
 	  
       //draw(myLink, ctx);
-
       // wait one second before starting animation
 //      setTimeout(function() {
         var startTime = (new Date()).getTime();
-        animate(aLink, bLink, cLink, dLink, eLink, beLink, ceLink, canvas, ctx, startTime);
+        animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
 //      }, 1000);
     </script>
 </body>
 </html>
-
