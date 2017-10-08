@@ -58,7 +58,7 @@
 		
 		var theta = Math.acos((BD*BD + aLink.width*aLink.width - cLink.width*cLink.width)/(2*BD*aLink.width));
 		
-		var beta = Math.acos(( cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
+		var beta = Math.acos((cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
 		
 		var gamma = Math.acos((aLink.width*aLink.width + cLink.width*cLink.width - BD*BD)/(2*aLink.width*cLink.width));
 		
@@ -83,9 +83,8 @@
 			dLink.width = BD;
 		   	draw(dLink, ctx);// BD piesia
 			ctx.restore();
-			ctx.rotate(/*-Math.PI+theta + */gamma);
+			ctx.rotate(-Math.PI + theta + tau);
 			draw(aLink, ctx); // BC
-			draw(aLink,ctx);       // BF (turetu buti reguliuojamas)
 			ctx.save();
 			/*
 			ctx.rotate(-psi);
@@ -109,14 +108,28 @@
 		
         ctx.restore(); // M1 [M0] 
         draw(cLink, ctx); // AD
+        
+		//ctx.save()
+		var psi = Math.PI - beta - delta;
+		if (((th1)%(Math.PI*2)) > Math.PI){ // apacia
+		/*
+		    psi = -psi * th1;
+		    //ctx.save();
+			ctx.translate(cLink.width, 0);
+			ctx.rotate(psi);
+			draw(bLink, ctx); // DC
+			//ctx.restore();
+			*/
+		}else{ // virsus
+			//ctx.save();
+			psi = -psi /* th1;*/;
+			ctx.translate(cLink.width, 0);
+			ctx.rotate(psi);
+			draw(bLink, ctx); // DC
+			//ctx.restore();
+		}
+	
 		
-		ctx.save();
-		ctx.translate(cLink.width, 0);
-		ctx.rotate(alpha);
-		draw(bLink, ctx); // DC
-		
-		
-		ctx.restore();
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
