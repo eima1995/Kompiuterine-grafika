@@ -45,6 +45,10 @@
         alfa = - Math.PI/180*t; // kad, kita puse suktusi
 		ctx.rotate(alfa);
         draw(bLink, ctx);
+		
+		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alpha));
+		
+		
 
         if (Math.floor((-alfa / Math.PI) % 2) == 0) {
 			console.log("Virsus");
