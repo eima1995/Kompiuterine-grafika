@@ -30,7 +30,7 @@
       }
       function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
 		var time = (new Date()).getTime() - startTime;
-        var t = time / 10;
+        var t = time / 50 ;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save(); // [M0]
@@ -44,11 +44,13 @@
 		
 		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alfa));
 		var theta = Math.acos((AC*AC + cLink.width*cLink.width - bLink.width*bLink.width)/(2*AC*cLink.width));
+		
 		var gamma = Math.acos((AC*AC + aLink.width*aLink.width - aLink.width*aLink.width)/(2*aLink.width*AC));
 		
-
-        
+		var tau = Math.acos((aLink.width*aLink.width + aLink.width*aLink.width - AC*AC)/(2*aLink.width*aLink.width));
 		
+		var delta = Math.acos((AC*AC + bLink.width*bLink.width - cLink.width*cLink.width)/(2*bLink.width*AC));
+
         ctx.restore(); // M1 [M0]
 		ctx.translate(-cLink.width,0);
 		draw(cLink, ctx) //AD
@@ -58,12 +60,18 @@
 			ctx.rotate(-theta);
 		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
 			draw(dLink, ctx);
-			
 			ctx.rotate(-gamma);
 			draw(aLink, ctx);  // AB
-			
-			
+		
+		    ctx.rotate(theta + gamma);
+			ctx.translate(cLink.width,0);
+			ctx.rotate(alfa);
+			ctx.translate(bLink.width,0);
+			ctx.rotate(-delta - gamma);
+			draw(aLink, ctx);  // BC			
         }else{
+		
+		
 		    //console.log("Apacia" + alfa);
 			ctx.rotate(theta);
 		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
