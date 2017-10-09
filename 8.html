@@ -137,21 +137,24 @@
         draw(cLink, ctx); // AD
         
 		
-		// DC piesimas
-		var psi = Math.PI - beta - delta;
-		psi = -psi;
-		ctx.translate(cLink.width, 0);
-		ctx.rotate(psi);
-		draw(bLink, ctx); // DC
-		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
-			//console.log("PSI" + psi);
-		 
-		 
-		}else{		 
-	    }
 		
 	
-		
+		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+			//console.log("PSI" + psi);
+		    var psi = Math.PI + (beta - delta);
+		    psi = -psi;
+			ctx.translate(cLink.width, 0);
+			ctx.rotate(psi);
+			draw(bLink, ctx); // DC
+		}else{ // virsus
+			// DC piesimas
+			var psi = Math.PI - beta - delta;
+			psi = -psi;
+			ctx.translate(cLink.width, 0);
+			ctx.rotate(psi);
+			draw(bLink, ctx); // DC
+	    }
+	
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
@@ -224,4 +227,3 @@
     </script>
 </body>
 </html>
-
