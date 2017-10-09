@@ -52,17 +52,11 @@
 		draw(aLink, ctx);
 		
         var BD = Math.sqrt(aLink.width*aLink.width + cLink.width*cLink.width - 2*aLink.width*cLink.width*Math.cos(alpha));
-	    //console.log("BD = " + BD);
-		
-		var theta = Math.acos((BD*BD + aLink.width*aLink.width - cLink.width*cLink.width)/(2*BD*aLink.width));
-		
-		var beta = Math.acos((cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
-		
-		var gamma = Math.acos((aLink.width*aLink.width + cLink.width*cLink.width - BD*BD)/(2*aLink.width*cLink.width));
-		
-		var delta = Math.acos((BD*BD + bLink.width*bLink.width - aLink.width * aLink.width)/(2*BD*bLink.width));
-		
-		var tau = Math.acos((BD*BD + aLink.width*aLink.width - bLink.width * bLink.width)/(2*BD*aLink.width));
+		var theta = angle(BD,aLink.width,cLink.width); //ABD
+		var beta = angle(cLink.width, BD, aLink.width); //ADB
+		var gamma = angle(aLink.width,cLink.width,BD); //DAB
+		var delta = angle(BD, bLink.width, aLink.width); //ADC
+		var tau = angle(BD, aLink.width, bLink.width);
 	
 	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
 		
@@ -161,6 +155,12 @@
           animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
       }
+	  
+	  
+	  function angle(a, b, c){
+			return Math.acos((a * a + b * b - c * c) / (2*a*b));
+      }  
+	  
       var canvas = document.getElementById('myCanvas');
       var ctx = canvas.getContext('2d');
       var aLink = {  // AB, BC
