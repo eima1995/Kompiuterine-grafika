@@ -60,14 +60,12 @@
 	
 	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
 		
-		
-		
 		// trikampio skaiciavimai
 		var BE = Math.sqrt(bfLink.width * bfLink.width + efLink.width * efLink.width); // BF^2 + EF^2
-		var ebf = Math.acos((BE * BE + bfLink.width * bfLink.width - efLink.width *  efLink.width) / (2 * BE * bfLink.width)); // kampas EBF
+		var ebf = angle(BE,bfLink.width,efLink.width);// EBF
 		var FC = aLink.width - bfLink.width;
 		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
-		var fce = Math.acos((FC * FC + ceLink.width * ceLink.width - efLink.width *  efLink.width) / (2 * FC * ceLink.width)); // kampas FCE
+		var fce = angle(FC, ceLink.width, efLink.width); // FCE
 		
 	    if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
