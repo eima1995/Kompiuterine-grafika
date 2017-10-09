@@ -3,7 +3,7 @@
 <head>
 </head>
   <body>
-    <canvas id="myCanvas" width="1200" height="1000"></canvas>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
     <script>
       window.requestAnimFrame = (function(callback) {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -29,61 +29,131 @@
         ctx.fill();
       }
       function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
-		var time = (new Date()).getTime() - startTime;
-        var t = time / 50 ;
-
+         // update
+        var time = (new Date()).getTime() - startTime;
+        var t = time / 50;
+        
+		
+		// TODO: pradzia pakeisti nepatinka man jinai.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // store initial coordinates
         ctx.save(); // [M0]
-
-        ctx.translate(canvas.width/2, canvas.height/2);
+        ctx.save(); // [M0,M0]
+        ctx.translate(canvas.width/2+100,canvas.height/2);
+		var th1 = Math.PI/180*t
+		ctx.rotate(th1); 
+		
+        ctx.restore();  // M0 [M0]		
+        ctx.translate(canvas.width/2-100,canvas.height/2);
 		ctx.save();  // [M1,M0]
-	    
-        alfa = - Math.PI/180*t; // kad, kita puse suktusi
-		ctx.rotate(alfa);
-        draw(bLink, ctx);
+		ctx.save();
+		alpha = -th1;
+		ctx.rotate(alpha);
+		draw(aLink, ctx);
 		
-		var AC = Math.sqrt(cLink.width*cLink.width + bLink.width*bLink.width - 2*cLink.width*bLink.width*Math.cos(Math.PI - alfa));
-		var theta = Math.acos((AC*AC + cLink.width*cLink.width - bLink.width*bLink.width)/(2*AC*cLink.width));
+        var BD = Math.sqrt(aLink.width*aLink.width + cLink.width*cLink.width - 2*aLink.width*cLink.width*Math.cos(alpha));
+	    //console.log("BD = " + BD);
 		
-		var gamma = Math.acos((AC*AC + aLink.width*aLink.width - aLink.width*aLink.width)/(2*aLink.width*AC));
+		var theta = Math.acos((BD*BD + aLink.width*aLink.width - cLink.width*cLink.width)/(2*BD*aLink.width));
 		
-		var tau = Math.acos((aLink.width*aLink.width + aLink.width*aLink.width - AC*AC)/(2*aLink.width*aLink.width));
+		var beta = Math.acos((cLink.width*cLink.width + BD*BD - aLink.width*aLink.width)/(2*BD*cLink.width)); 
 		
-		var delta = Math.acos((AC*AC + bLink.width*bLink.width - cLink.width*cLink.width)/(2*bLink.width*AC));
-
-        ctx.restore(); // M1 [M0]
-		ctx.translate(-cLink.width,0);
-		draw(cLink, ctx) //AD
+		var gamma = Math.acos((aLink.width*aLink.width + cLink.width*cLink.width - BD*BD)/(2*aLink.width*cLink.width));
 		
-		if(((Math.PI/180*t)%(Math.PI*2)) < Math.PI){
-			//console.log("Virsus" + alfa);
-			ctx.rotate(-theta);
-		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
-			draw(dLink, ctx);
-			ctx.rotate(-gamma);
-			draw(aLink, ctx);  // AB
+		var delta = Math.acos((BD*BD + bLink.width*bLink.width - aLink.width * aLink.width)/(2*BD*bLink.width));
 		
-		    ctx.rotate(theta + gamma);
-			ctx.translate(cLink.width,0);
-			ctx.rotate(alfa);
-			ctx.translate(bLink.width,0);
-			ctx.rotate(-delta - gamma);
-			draw(aLink, ctx);  // BC			
-        }else{
+		var tau = Math.acos((BD*BD + aLink.width*aLink.width - bLink.width * bLink.width)/(2*BD*aLink.width));
+	
+	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
 		
 		
-		    //console.log("Apacia" + alfa);
-			ctx.rotate(theta);
-		    dLink.width = AC; // galim priskirti kadangi, niekam nera priskirtas
-			draw(dLink, ctx);
+		
+		// trikampio skaiciavimai
+		var BE = Math.sqrt(bfLink.width * bfLink.width + efLink.width * efLink.width); // BF^2 + EF^2
+		var ebf = Math.acos((BE * BE + bfLink.width * bfLink.width - efLink.width *  efLink.width) / (2 * BE * bfLink.width)); // kampas EBF
+		var FC = aLink.width - bfLink.width;
+		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
+		var fce = Math.acos((FC * FC + ceLink.width * ceLink.width - efLink.width *  efLink.width) / (2 * FC * ceLink.width)); // kampas FCE
+		
+	    if (((th1)%(Math.PI*2)) > Math.PI){
+		// uz apacios veikima atsakingas
+			ctx.rotate(Math.PI + theta);
+			dLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
+			console.log("Theta" + theta);
+			draw(dLink, ctx); // zalia BD piesia
+			ctx.rotate(-tau);	///////// speju negeras kampas
+		
+		 	draw(aLink, ctx);  // BC
+			ctx.save();
+			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
-			ctx.rotate(gamma);
-			draw(aLink, ctx);  // AB
+			ctx.save();
+			ctx.rotate(-ebf);
+			beLink.width = BE;
+			draw(beLink,ctx);
+			ctx.restore();
+			
+			ctx.save();
+			ctx.translate(bfLink.width,0);
+			ctx.rotate(-Math.PI/2);
+			draw(efLink,ctx);   // EF
+			ctx.restore();
+	
+			ctx.translate(aLink.width,0);
+			ctx.rotate(Math.PI + fce);
+            draw(ceLink, ctx); // CE piesia
+
+		}else{ // virsaus veikimas
+		    ctx.save();
+		    ctx.rotate(Math.PI - theta); //PI - theta
+			dLink.width = BD;
+		   	draw(dLink, ctx);// BD piesia
+			ctx.restore();
+			ctx.rotate(-(theta + tau) + Math.PI);
+			draw(aLink, ctx); // BC
+			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
+			
+			ctx.save();
+			ctx.rotate(-ebf);
+			beLink.width = BE;
+			draw(beLink,ctx);
+			ctx.restore();
+			
+			ctx.save();
+			ctx.translate(bfLink.width,0);
+			ctx.rotate(-Math.PI/2);
+			draw(efLink,ctx);   // EF
+			ctx.restore();
+	
+			ctx.translate(aLink.width,0);
+			ctx.rotate(Math.PI + fce);
+            draw(ceLink, ctx); // CE piesia
+		
 		}
-		       
-        ctx.restore(); // M0 [] //pradzios koordinates grazinamos
-		;
-        // request new frame
+		
+		ctx.restore();  // M0 [M0]		
+		
+        ctx.restore(); // M1 [M0] 
+        draw(cLink, ctx); // AD
+        
+		
+		// DC piesimas
+		var psi = Math.PI - beta - delta;
+		psi = -psi;
+		ctx.translate(cLink.width, 0);
+		ctx.rotate(psi);
+		draw(bLink, ctx); // DC
+		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+			//console.log("PSI" + psi);
+		 
+		 
+		}else{		 
+	    }
+		
+	
+		
+        ctx.restore(); // M0 [] 
+        ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
           animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
@@ -109,7 +179,7 @@
         off: 10,
         borderWidth: 4
       };
-      var dLink = { // AC
+      var dLink = { // BD 
 		color: 'cyan',
 		width: 100,
 		off: 10,
@@ -154,3 +224,4 @@
     </script>
 </body>
 </html>
+
