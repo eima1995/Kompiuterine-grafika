@@ -162,20 +162,19 @@
 		bfLink.width = bfLength * 1;
 		efLink.width = efLength;
 		
-		// TODO: pradzia pakeisti nepatinka man jinai.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         // store initial coordinates
         ctx.save(); // [M0]
         ctx.save(); // [M0,M0]
         ctx.translate(canvas.width/2+100,canvas.height/2);
-		var th1 = Math.PI/180*t
-		ctx.rotate(th1); 
+		var alpha1 = Math.PI/180*t
+		ctx.rotate(alpha1); 
 		
         ctx.restore();  // M0 [M0]		
         ctx.translate(canvas.width/2-100,canvas.height/2);
 		ctx.save();  // [M1,M0]
 		ctx.save();
-		alpha = -th1;
+		alpha = -alpha1;
 		ctx.rotate(alpha);
 		
 		
@@ -199,7 +198,8 @@
 		
 		
 		//1  variantas
-	    if (((th1)%(Math.PI*2)) > Math.PI){
+		/*
+	    if (((alpha1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
@@ -254,10 +254,10 @@
             draw(ceLink, ctx); // CE piesia
 		
 		}
+		*/
 		
-// 2 var
-/*
-		 if (((th1)%(Math.PI*2)) > Math.PI){
+        // 2 var
+		 if (((alpha1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
@@ -312,10 +312,11 @@
             draw(ceLink, ctx); // CE piesia
 		
 		}
-		*/
+		
+		
     // 3 var virsus kaip apacia
 	/*
-		if (((th1)%(Math.PI*2)) > Math.PI){
+		if (((alpha1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
@@ -377,8 +378,9 @@
         ctx.restore(); // M1 [M0] 
         draw(adLink, ctx); // AD
         
-		//1var gerai
-		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+		//1var 
+		/*
+		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI + (beta - delta);
 		    psi = -psi;
@@ -393,11 +395,11 @@
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-		
+		*/
 		
 		// 2 var 
-		/*
-		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+		
+		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI - (beta + delta);
 		    psi = -psi;
@@ -412,11 +414,11 @@
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-		*/
+		
 		
 		// 3 var virsus kaip apacia
 		/*
-		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI + (beta - delta);
 		    psi = -psi;
@@ -439,7 +441,8 @@
 		
 		var cornerCBE = calc(ceLink,bcLink,beLink);
 		// 1 variantas
-		if (((th1)%(Math.PI*2)) > Math.PI){
+		/*
+		if (((alpha1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
@@ -447,24 +450,24 @@
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
-		
+		*/
 		
 		// 2 variantas
-		/*
-		if (((th1)%(Math.PI*2)) > Math.PI){
+		
+		if (((alpha1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
 		}else{
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-		}*/
+		}
 		
 		
 		
 		// 3 variantas
 		/*
-		if (((th1)%(Math.PI*2)) > Math.PI){
+		if (((alpha1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
@@ -473,7 +476,7 @@
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin(-Math.PI/180*t -(theta + tau) + Math.PI  - cornerCBE) * beLink.width);
 		}*/
 		
-		if(pathOfCornerCrossing.length > 5000){
+		if(pathOfCornerCrossing.length > 500){
           pathOfCornerCrossing.reverse();
           pathOfCornerCrossing.pop();
           pathOfCornerCrossing.pop();
