@@ -45,11 +45,14 @@
 		<canvas id="myCanvas" width="1000" height="400"></canvas>
 		<div id="slidecontainer">
 			<p>EF ilgis: <span id="demo"></span></p>
-			<input type="range" min="0" max="100" value="50" class="slider" id="myRange">
-		
-			<p>BF ilgis: <span id="demo2"></span></p>
-			<input type="range" min="0" max="80" value="40" class="slider" id="myRange2">
+			<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
 		</div>
+		
+		<div id="slidecontainer">
+			<p>BF ilgis: <span id="demo2"></span></p>
+			<input type="range" min="0" max="79" value="40" class="slider" id="myRange2">
+		</div>
+		
 	</div>
 		
     <script>
@@ -110,11 +113,22 @@
 	  
       function animate(abLink, bcLink, cdLink, cLink, bdLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
          // update
-        var time = (new Date()).getTime() - startTime;
-        var t = time / 50;
+        //var time = (new Date()).getTime() - startTime;
+        //var t = time / 50;
+		
+		var is = false;
+		if(continueAnimating)
+			t  = t + 1;
+		else
+			t += 0;
+		
+		if (t == 360){
+			t -= 360;
+			is = !is;	
+		}
         
-		bfLink.width = bfLength ;
-		efLink.width = efLength ;
+		bfLink.width = bfLength * 1;
+		efLink.width = efLength;
 		
 		// TODO: pradzia pakeisti nepatinka man jinai.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -526,11 +540,13 @@
 	var bfLength = 40;
 	var slider = document.getElementById("myRange");
 	var slider2 = document.getElementById("myRange2");
+	
 	var output = document.getElementById("demo");
 	var output2 = document.getElementById("demo2");
 	var is = false;
+	
 	output.innerHTML = slider.value;
-	output2.innerHTML = slider.value;
+	output2.innerHTML = slider2.value;
 		
 	slider.oninput = function() {
 		efLength = Number(this.value);
