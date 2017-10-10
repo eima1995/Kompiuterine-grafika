@@ -150,12 +150,7 @@
 			t  = t + 1;
 		else
 			t += 0;
-		
-		if (t == 360){
-			t -= 360;
-			is = !is;	
-		}
-        
+	    
 		bfLink.width = bfLength * 1;
 		efLink.width = efLength;
 		
@@ -173,6 +168,8 @@
 		ctx.save();
 		alpha = -alpha1;
 		ctx.rotate(alpha);
+		draw(abLink, ctx);
+		
 		
 		var turns = 2;
 		if (((alpha1)%(Math.PI*4)) > 2*Math.PI){  // antras ratas prasideda
@@ -180,8 +177,6 @@
 		}else if (((alpha1)%(Math.PI*2)) > 0){  // pirmas ratas prasideda
 			turns = 1;
 		}
-		
-		draw(abLink, ctx);
 		
         var BD = Math.sqrt(abLink.width*abLink.width + adLink.width*adLink.width - 2*abLink.width*cLink.width*Math.cos(alpha));
 		var theta = angle(BD,abLink.width,adLink.width); //ABD
