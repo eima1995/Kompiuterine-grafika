@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<style>
+	<style>
 	#slidecontainer {
-		width: 100%;
+		width: 50%;
 	}
 
 	.slider {
 		-webkit-appearance: none;
-		width: 100%;
+		width: 50%;
 		height: 15px;
 		border-radius: 5px;
 		background: #d3d3d3;
@@ -38,17 +38,17 @@
 		background: #4CAF50;
 		cursor: pointer;
 	}
-</style>
+  </style>
   <body>
 	<div id="container" align="center">
 		<input type ="button" class = "button button2" value="sustabdyti/paleisti" id=toggle> 
-		<canvas id="myCanvas" width="1000" height="600"></canvas>
+		<canvas id="myCanvas" width="1000" height="400"></canvas>
 		<div id="slidecontainer">
 			<p>EF ilgis: <span id="demo"></span></p>
-			<input type="range" min="1" max="200" value="50" class="slider" id="myRange">
+			<input type="range" min="0" max="100" value="50" class="slider" id="myRange">
 		
 			<p>BF ilgis: <span id="demo2"></span></p>
-			<input type="range" min="1" max="100" value="50" class="slider" id="myRange2">
+			<input type="range" min="0" max="80" value="40" class="slider" id="myRange2">
 		</div>
 	</div>
 		
@@ -436,10 +436,7 @@
 		drawPath(pathOfCornerCrossing, ctx, true);
 		
 		ctx.restore();
-		
-		
-
-		
+				
         requestAnimFrame(function() {
           animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
@@ -455,67 +452,67 @@
 	  
 	  
       var abLink = { 
-        color: '#8ED6FF',
-        width: 200,
-        off: 10,
-        borderWidth: 4
+        color: '#4da6ff',
+        width: 80,
+        off: 5,
+        borderWidth: 2
       };
 	  
 	 var bcLink = {
-        color: '#FF8ED6',
-        width: 200,
-        off: 10,
-        borderWidth: 4
+        color: '#4da6ff',
+        width: 80,
+        off: 5,
+        borderWidth: 2
       };
 	  
 	  
       var cdLink = { // CD
-        color: '#FF8ED6',
-        width: 250,
-        off: 10,
-        borderWidth: 4
+        color: '#4da6ff',
+        width: 100,
+        off: 5,
+        borderWidth: 2
       };
 	  
 	  var adLink = { // AD
-        color: 'green',
-        width: 150,
-        off: 10,
-        borderWidth: 4
+        color: '#4da6ff',
+        width: 60,
+        off: 5,
+        borderWidth: 2
       };
       var bdLink = { // BD 
-		color: 'cyan',
+		color: '#4da6ff',
 		width: 100,
-		off: 10,
-       borderWidth: 4
+		off: 5,
+       borderWidth: 2
       };
 	  
 	  var bfLink = { // BF
-		color: 'cyan',
-		width: 100,
-		off: 10,
-       borderWidth: 4
+		color: '#4da6ff',
+		width: 40,
+		off: 5,
+       borderWidth: 2
       };
 	  
 	  
 	  var efLink = { // EF
-		color: 'cyan',
-		width: 100,
-		off: 10,
-       borderWidth: 4
+		color: '#4da6ff',
+		width: 50,
+	   off: 5,
+       borderWidth: 2
       };
 	  
 	 var beLink = { // BE
-		color: 'cyan',
+		color: '#4da6ff',
 		width: 100,
-		off: 10,
-       borderWidth: 4
+		off: 5,
+        borderWidth: 2
       };
 	 
 	var ceLink = { // CE
-		color: 'cyan',
+		color: '#4da6ff',
 		width: 100,
-	    off: 10,
-       borderWidth: 4
+	    off: 5,
+       borderWidth: 2
       };
 	  
       //draw(myLink, ctx);
@@ -525,8 +522,8 @@
 	var continueAnimating = true;
     var t = 0;
 	var continueAnimating = true;
-	var efLength = 100;
-	var bfLength = 100;
+	var efLength = 50;
+	var bfLength = 40;
 	var slider = document.getElementById("myRange");
 	var slider2 = document.getElementById("myRange2");
 	var output = document.getElementById("demo");
