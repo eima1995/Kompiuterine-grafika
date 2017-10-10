@@ -28,7 +28,7 @@
         ctx.fillStyle = 'white';
         ctx.fill();
       }
-      function animate(abLink, bcLink, cdLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
+      function animate(abLink, bcLink, cdLink, cLink, bdLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
          // update
         var time = (new Date()).getTime() - startTime;
         var t = time / 50;
@@ -73,9 +73,9 @@
 	    if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
-			dLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
+			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
 		
-			draw(dLink, ctx); // zalia BD piesia
+			draw(bdLink, ctx); // zalia BD piesia
 			ctx.rotate(-tau);	///////// speju negeras kampas
 		
 		 	draw(bcLink, ctx);  // BC
@@ -101,8 +101,8 @@
 		}else{ // virsaus veikimas
 		    ctx.save();
 		    ctx.rotate(Math.PI - theta); //PI - theta
-			dLink.width = BD;
-		   	draw(dLink, ctx);// BD piesia
+			bdLink.width = BD;
+		   	draw(bdLink, ctx);// BD piesia
 			ctx.restore();
 			ctx.rotate(-(theta + tau) + Math.PI);
 			draw(bcLink, ctx); // BC
@@ -153,7 +153,7 @@
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
-          animate(abLink, bcLink, cdLink, adLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
+          animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
       }
 	  
@@ -190,11 +190,11 @@
 	  
 	  var adLink = { // AD
         color: 'green',
-        width: 50,
-        off: 150
+        width: 150,
+        off: 10,
         borderWidth: 4
       };
-      var dLink = { // BD 
+      var bdLink = { // BD 
 		color: 'cyan',
 		width: 100,
 		off: 10,
@@ -234,7 +234,7 @@
       // wait one second before starting animation
 //      setTimeout(function() {
         var startTime = (new Date()).getTime();
-        animate(abLink, bcLink, cdLink, adLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
+        animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
 //      }, 1000);
     </script>
 </body>
