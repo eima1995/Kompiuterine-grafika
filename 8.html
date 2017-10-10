@@ -1,81 +1,71 @@
 <!DOCTYPE html>
 <html>
 <style>
+	#slidecontainer {
+		width: 100%;
+	}
 
-#slidecontainer {
-    width: 100%;
-}
+	.slider {
+		-webkit-appearance: none;
+		width: 100%;
+		height: 15px;
+		border-radius: 5px;
+		background: #d3d3d3;
+		outline: none;
+		opacity: 0.7;
+		-webkit-transition: .2s;
+		transition: opacity .2s;
+	}
 
-.slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 15px;
-    border-radius: 5px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-}
+	.slider:hover {
+		opacity: 1;
+	}
 
-.slider:hover {
-    opacity: 1;
-}
+	.slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 25px;
+		height: 25px;
+		border-radius: 50%;
+		background: #4CAF50;
+		cursor: pointer;
+	}
 
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
+	.slider::-moz-range-thumb {
+		width: 25px;
+		height: 25px;
+		border-radius: 50%;
+		background: #4CAF50;
+		cursor: pointer;
+	}
 </style>
   <body>
-    <canvas id="myCanvas" width="600" height="600"></canvas>
-	
-	<div id="slidecontainer">
-	    <p>BF ilgis: <span id="BFilgis"></span></p>
-		<input type="range" min="1" max="200" value="100" class="slider" id="BF">
+	<div id="container" align="center">
+		<input type ="button" class = "button button2" value="sustabdyti/paleisti" id=toggle> 
+		<canvas id="myCanvas" width="1000" height="600"></canvas>
+		<div id="slidecontainer">
+			<p>EF ilgis: <span id="demo"></span></p>
+			<input type="range" min="1" max="200" value="50" class="slider" id="myRange">
 		
-		<p>EF ilgis: <span id="EFilgis"></span></p>
-		<input type="range" min="1" max="200" value="100" class="slider" id="EF">
+			<p>BF ilgis: <span id="demo2"></span></p>
+			<input type="range" min="1" max="100" value="50" class="slider" id="myRange2">
+		</div>
 	</div>
-
+		
     <script>
-	  var BF = document.getElementById("BF");
-	  var output = document.getElementById("BFilgis");
-	  output.innerHTML = BF.value;
-	  
-	  BF.oninput = function() {
-		output.innerHTML = this.value;
-	  }
-	  
-	  var EF = document.getElementById("EF");
-	  var output1 = document.getElementById("EFilgis");
-	  output1.innerHTML = EF.value;
-	  
-	  EF.oninput = function() {
-		output1.innerHTML = this.value;
-	  }
-	  
-	  
-		  
       window.requestAnimFrame = (function(callback) {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
         function(callback) {
           window.setTimeout(callback, 1000 / 60);
         };
       })();
+	  
+	  document.getElementById('toggle').addEventListener('click',function(){
+		if(continueAnimating)
+			continueAnimating = false;
+		else
+			continueAnimating = true;
+		});	
 	 
 	  var pathOfCornerCrossing = new Array();
       function draw(myLink, ctx) {
@@ -118,15 +108,13 @@
         ctx.restore();
       }
 	  
-	  
-	  
-	  
       function animate(abLink, bcLink, cdLink, cLink, bdLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
          // update
         var time = (new Date()).getTime() - startTime;
-        var t = time / 50  ;
+        var t = time / 50;
         
-		//var aLink = abLink;
+		bfLink.width = bfLength ;
+		efLink.width = efLength ;
 		
 		// TODO: pradzia pakeisti nepatinka man jinai.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -165,7 +153,6 @@
 		
 		
 		//1  variantas
-		/*
 	    if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
@@ -221,9 +208,9 @@
             draw(ceLink, ctx); // CE piesia
 		
 		}
-		*/
 		
 // 2 var
+/*
 		 if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
@@ -279,6 +266,7 @@
             draw(ceLink, ctx); // CE piesia
 		
 		}
+		*/
     // 3 var virsus kaip apacia
 	/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
@@ -344,7 +332,6 @@
         draw(adLink, ctx); // AD
         
 		//1var gerai
-		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI + (beta - delta);
@@ -360,9 +347,10 @@
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-		*/
+		
 		
 		// 2 var 
+		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI - (beta + delta);
@@ -378,7 +366,7 @@
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-		
+		*/
 		
 		// 3 var virsus kaip apacia
 		/*
@@ -405,7 +393,6 @@
 		
 		var cornerCBE = calc(ceLink,bcLink,beLink);
 		// 1 variantas
-		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
@@ -414,9 +401,10 @@
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
-		*/
+		
 		
 		// 2 variantas
+		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
@@ -424,7 +412,7 @@
 		}else{
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-		}
+		}*/
 		
 		
 		
@@ -511,7 +499,7 @@
 	  
 	  var efLink = { // EF
 		color: 'cyan',
-		width: 200,
+		width: 100,
 		off: 10,
        borderWidth: 4
       };
@@ -533,8 +521,32 @@
       //draw(myLink, ctx);
       // wait one second before starting animation
 //      setTimeout(function() {
-        var startTime = (new Date()).getTime();
-        animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
+    var startTime = (new Date()).getTime();
+	var continueAnimating = true;
+    var t = 0;
+	var continueAnimating = true;
+	var efLength = 100;
+	var bfLength = 100;
+	var slider = document.getElementById("myRange");
+	var slider2 = document.getElementById("myRange2");
+	var output = document.getElementById("demo");
+	var output2 = document.getElementById("demo2");
+	var is = false;
+	output.innerHTML = slider.value;
+	output2.innerHTML = slider.value;
+		
+	slider.oninput = function() {
+		efLength = Number(this.value);
+		output.innerHTML = this.value;
+	}
+		
+	slider2.oninput = function() {
+		bfLength = Number(this.value);
+		output2.innerHTML = this.value;
+	}
+	  
+    var startTime = (new Date()).getTime();
+    animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
 //      }, 1000);
     </script>
 </body>
