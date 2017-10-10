@@ -1,10 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
-</head>
+<style>
+
+#slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+</style>
   <body>
-    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+	
+	<div id="slidecontainer">
+	    <p>BF ilgis: <span id="BFilgis"></span></p>
+		<input type="range" min="1" max="200" value="100" class="slider" id="BF">
+		
+		<p>EF ilgis: <span id="EFilgis"></span></p>
+		<input type="range" min="1" max="200" value="100" class="slider" id="EF">
+	</div>
+
     <script>
+	  var BF = document.getElementById("BF");
+	  var output = document.getElementById("BFilgis");
+	  output.innerHTML = BF.value;
+	  
+	  BF.oninput = function() {
+		output.innerHTML = this.value;
+	  }
+	  
+	  var EF = document.getElementById("EF");
+	  var output1 = document.getElementById("EFilgis");
+	  output1.innerHTML = EF.value;
+	  
+	  EF.oninput = function() {
+		output1.innerHTML = this.value;
+	  }
+	  
+	  
+		  
       window.requestAnimFrame = (function(callback) {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
         function(callback) {
@@ -158,22 +223,21 @@
 		}
 		*/
 		
-// 2 var apskritima piesia	
-/*
+// 2 var
 		 if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
 		
 			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(tau);	///////// keiciau
+			ctx.rotate(tau);	///////// speju negeras kampas
 		
 		 	draw(bcLink, ctx);  // BC
 			ctx.save();
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
 			ctx.save();
-			ctx.rotate(-ebf); //keiciau
+			ctx.rotate(-ebf);
 			beLink.width = BE;
 			draw(beLink,ctx);
 			ctx.restore();
@@ -185,7 +249,7 @@
 			ctx.restore();
 	
 			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce); //keiciau
+			ctx.rotate(Math.PI + fce);
             draw(ceLink, ctx); // CE piesia
 
 		}else{ // virsaus veikimas
@@ -215,16 +279,15 @@
             draw(ceLink, ctx); // CE piesia
 		
 		}
-		
-*/	
     // 3 var virsus kaip apacia
-        if (((th1)%(Math.PI*2)) > Math.PI){
+	/*
+		if (((th1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
 		
 			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(-tau);
+			ctx.rotate(-tau);	///////// speju negeras kampas
 		
 		 	draw(bcLink, ctx);  // BC
 			ctx.save();
@@ -247,33 +310,34 @@
             draw(ceLink, ctx); // CE piesia
 
 		}else{ // virsaus veikimas
-		    ctx.save();
-		    ctx.rotate(Math.PI - theta); //PI - theta
+		    //ctx.save();
+		    ctx.rotate(theta); //PI - theta
 			bdLink.width = BD;
-		   	//draw(bdLink, ctx);// BD piesia
-			ctx.restore();
-			ctx.rotate(-(theta + tau) + Math.PI); //keisti
+		   	draw(bdLink, ctx);// BD piesia
+		   	draw(bdLink, ctx);// BD piesia
+			//ctx.restore();
+			ctx.rotate(tau);
 			draw(bcLink, ctx); // BC
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
 			ctx.save();
-			ctx.rotate(ebf);   // keisti
+			ctx.rotate(-ebf);
 			beLink.width = BE;
 			draw(beLink,ctx);
 			ctx.restore();
 			
 			ctx.save();
 			ctx.translate(bfLink.width,0);
-			ctx.rotate(Math.PI/2); //keiciau
+			ctx.rotate(-Math.PI/2);
 			draw(efLink,ctx);   // EF
 			ctx.restore();
 	
 			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI - fce);   //keisti
+			ctx.rotate(Math.PI + fce);
             draw(ceLink, ctx); // CE piesia
 		
 		}
-		
+     */   
 		ctx.restore();  // M0 [M0]		
 		
         ctx.restore(); // M1 [M0] 
@@ -298,8 +362,7 @@
 	    }
 		*/
 		
-		// 2 var apskritima piesia
-		/*
+		// 2 var 
 		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI - (beta + delta);
@@ -315,9 +378,10 @@
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-		*/
+		
 		
 		// 3 var virsus kaip apacia
+		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){ //apacioje AB
 			//console.log("PSI" + psi);
 		    var psi = Math.PI + (beta - delta);
@@ -327,13 +391,13 @@
 			draw(cdLink, ctx); // DC
 		}else{ // virsus
 			// DC piesimas
-			var psi = Math.PI - beta - delta;
+			var psi = Math.PI - (beta + delta);
 			psi = -psi;
 			ctx.translate(adLink.width, 0);
 			ctx.rotate(psi);
 			draw(cdLink, ctx); // DC
 	    }
-	
+	*/
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
 		
@@ -350,9 +414,9 @@
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
+		*/
 		
 		// 2 variantas
-		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
@@ -361,9 +425,11 @@
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
-		*/
+		
+		
 		
 		// 3 variantas
+		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
 		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
@@ -371,7 +437,8 @@
 		}else{
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin(-Math.PI/180*t -(theta + tau) + Math.PI  - cornerCBE) * beLink.width);
-		}
+		}*/
+		
 		if(pathOfCornerCrossing.length > 5000){
           pathOfCornerCrossing.reverse();
           pathOfCornerCrossing.pop();
