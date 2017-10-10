@@ -28,11 +28,12 @@
         ctx.fillStyle = 'white';
         ctx.fill();
       }
-      function animate(aLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
+      function animate(abLink, bcLink, bLink, cLink, dLink, efLink,beLink, ceLink, bfLink, canvas, ctx, startTime) {
          // update
         var time = (new Date()).getTime() - startTime;
         var t = time / 50;
         
+		//var aLink = abLink;
 		
 		// TODO: pradzia pakeisti nepatinka man jinai.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -49,21 +50,23 @@
 		ctx.save();
 		alpha = -th1;
 		ctx.rotate(alpha);
-		draw(aLink, ctx);
 		
-        var BD = Math.sqrt(aLink.width*aLink.width + cLink.width*cLink.width - 2*aLink.width*cLink.width*Math.cos(alpha));
-		var theta = angle(BD,aLink.width,cLink.width); //ABD
-		var beta = angle(cLink.width, BD, aLink.width); //ADB
-		var gamma = angle(aLink.width,cLink.width,BD); //DAB
-		var delta = angle(BD, bLink.width, aLink.width); //ADC
-		var tau = angle(BD, aLink.width, bLink.width);
+		
+		draw(abLink, ctx);
+		
+        var BD = Math.sqrt(abLink.width*abLink.width + cLink.width*cLink.width - 2*abLink.width*cLink.width*Math.cos(alpha));
+		var theta = angle(BD,abLink.width,cLink.width); //ABD
+		var beta = angle(cLink.width, BD, abLink.width); //ADB
+		var gamma = angle(abLink.width,cLink.width,BD); //DAB
+		var delta = angle(BD, bLink.width, bcLink.width); //ADC
+		var tau = angle(BD, bcLink.width, bLink.width);
 	
-	    ctx.translate(aLink.width,0); // kad galima butu kabinti BC
+	    ctx.translate(abLink.width,0); // kad galima butu kabinti BC
 		
 		// trikampio skaiciavimai
 		var BE = Math.sqrt(bfLink.width * bfLink.width + efLink.width * efLink.width); // BF^2 + EF^2
 		var ebf = angle(BE,bfLink.width,efLink.width);// EBF
-		var FC = aLink.width - bfLink.width;
+		var FC = bcLink.width - bfLink.width;
 		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
 		var fce = angle(FC, ceLink.width, efLink.width); // FCE
 		
@@ -71,11 +74,11 @@
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
 			dLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
-			console.log("Theta" + theta);
+		
 			draw(dLink, ctx); // zalia BD piesia
 			ctx.rotate(-tau);	///////// speju negeras kampas
 		
-		 	draw(aLink, ctx);  // BC
+		 	draw(bcLink, ctx);  // BC
 			ctx.save();
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
@@ -91,7 +94,7 @@
 			draw(efLink,ctx);   // EF
 			ctx.restore();
 	
-			ctx.translate(aLink.width,0);
+			ctx.translate(bcLink.width,0);
 			ctx.rotate(Math.PI + fce);
             draw(ceLink, ctx); // CE piesia
 
@@ -102,7 +105,7 @@
 		   	draw(dLink, ctx);// BD piesia
 			ctx.restore();
 			ctx.rotate(-(theta + tau) + Math.PI);
-			draw(aLink, ctx); // BC
+			draw(bcLink, ctx); // BC
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
 			ctx.save();
@@ -117,7 +120,7 @@
 			draw(efLink,ctx);   // EF
 			ctx.restore();
 	
-			ctx.translate(aLink.width,0);
+			ctx.translate(bcLink.width,0);
 			ctx.rotate(Math.PI + fce);
             draw(ceLink, ctx); // CE piesia
 		
@@ -150,7 +153,7 @@
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
         requestAnimFrame(function() {
-          animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
+          animate(abLink, bcLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
       }
 	  
@@ -161,12 +164,24 @@
 	  
       var canvas = document.getElementById('myCanvas');
       var ctx = canvas.getContext('2d');
-      var aLink = {  // AB, BC
+	  
+	  
+      var abLink = { 
         color: '#8ED6FF',
         width: 200,
         off: 10,
         borderWidth: 4
       };
+	  
+	 var bcLink = {
+        color: '#FF8ED6',
+        width: 200,
+        off: 10,
+        borderWidth: 4
+      };
+	  
+	  
+	  
       var bLink = { // CD
         color: '#FF8ED6',
         width: 250,
@@ -220,7 +235,7 @@
       // wait one second before starting animation
 //      setTimeout(function() {
         var startTime = (new Date()).getTime();
-        animate(aLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
+        animate(abLink, bcLink, bLink, cLink, dLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
 //      }, 1000);
     </script>
 </body>
