@@ -224,7 +224,7 @@
 			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
 		
 			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(-tau);	///////// speju negeras kampas
+			ctx.rotate(-tau);
 		
 		 	draw(bcLink, ctx);  // BC
 			ctx.save();
@@ -252,24 +252,24 @@
 			bdLink.width = BD;
 		   	//draw(bdLink, ctx);// BD piesia
 			ctx.restore();
-			ctx.rotate(-(theta + tau) + Math.PI);
+			ctx.rotate(-(theta + tau) + Math.PI); //keisti
 			draw(bcLink, ctx); // BC
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
 			
 			ctx.save();
-			ctx.rotate(-ebf);
+			ctx.rotate(ebf);   // keisti
 			beLink.width = BE;
 			draw(beLink,ctx);
 			ctx.restore();
 			
 			ctx.save();
 			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
+			ctx.rotate(Math.PI/2); //keiciau
 			draw(efLink,ctx);   // EF
 			ctx.restore();
 	
 			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
+			ctx.rotate(Math.PI - fce);   //keisti
             draw(ceLink, ctx); // CE piesia
 		
 		}
@@ -350,7 +350,7 @@
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
-		*/
+		
 		// 2 variantas
 		/*
 		if (((th1)%(Math.PI*2)) > Math.PI){
@@ -370,7 +370,7 @@
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
 		}else{
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
+			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin(-Math.PI/180*t -(theta + tau) + Math.PI  - cornerCBE) * beLink.width);
 		}
 		if(pathOfCornerCrossing.length > 5000){
           pathOfCornerCrossing.reverse();
