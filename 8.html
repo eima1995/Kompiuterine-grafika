@@ -38,19 +38,52 @@
 		background: #4CAF50;
 		cursor: pointer;
 	}
+	.button {
+		display: inline-block;
+		padding: 15px 25px;
+		font-size: 24px;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		: none;
+		color: #fff;
+		background-color: #4CAF50;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 9px #999;
+	}
+
+	.button:hover {background-color: #3e8e41}
+
+	   .button:active {
+		background-color: #3e8e41;
+		box-shadow: 0 5px #666;
+		transform: translateY(4px);
+	}
+	
+	.button {
+		padding: 10px 10px;
+	}
   </style>
   <body>
 	<div id="container" align="center">
-		<input type ="button" class = "button button2" value="sustabdyti/paleisti" id=toggle> 
 		<canvas id="myCanvas" width="1000" height="400"></canvas>
 		<div id="slidecontainer">
 			<p>EF ilgis: <span id="demo"></span></p>
-			<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+			<input type="range" min="0" max="80" value="40" class="slider" id="myRange">
 		</div>
 		
 		<div id="slidecontainer">
 			<p>BF ilgis: <span id="demo2"></span></p>
 			<input type="range" min="0" max="79" value="40" class="slider" id="myRange2">
+		</div>
+		
+		<div>
+		    <p>
+			</p>
+			<p>
+			</p>
+			<input type ="button" class = "button" value="stabdyti/paleisti" id=toggle> 
 		</div>
 		
 	</div>
@@ -63,12 +96,13 @@
         };
       })();
 	  
+	  // Stabdyti/paleisti
 	  document.getElementById('toggle').addEventListener('click',function(){
 		if(continueAnimating)
 			continueAnimating = false;
 		else
 			continueAnimating = true;
-		});	
+	  });	
 	 
 	  var pathOfCornerCrossing = new Array();
       function draw(myLink, ctx) {
