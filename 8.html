@@ -171,19 +171,14 @@
 		draw(abLink, ctx);
 		
 		
-		var turns = 2;
-		if (((alpha1)%(Math.PI*4)) > 2*Math.PI){  // antras ratas prasideda
-			turns = 2;
-		}else if (((alpha1)%(Math.PI*2)) > 0){  // pirmas ratas prasideda
-			turns = 1;
-		}
-		
         var BD = Math.sqrt(abLink.width*abLink.width + adLink.width*adLink.width - 2*abLink.width*cLink.width*Math.cos(alpha));
 		var theta = angle(BD,abLink.width,adLink.width); //ABD
 		var beta = angle(adLink.width, BD, abLink.width); //ADB
 		var gamma = angle(abLink.width,adLink.width,BD); //DAB
 		var delta = angle(BD, cdLink.width, bcLink.width); //ADC
-		var tau = angle(BD, bcLink.width, cdLink.width);
+		var tau = angle(BD, bcLink.width, cdLink.width); // DBC
+		var k = angle(bcLink.width, cdLink.width,BD); //BCD
+		
 	
 	    ctx.translate(abLink.width,0); // kad galima butu kabinti BC
 		
@@ -194,11 +189,17 @@
 		ceLink.width = Math.sqrt(efLink.width * efLink.width + FC * FC); // EF^2 + EC^2
 		var fce = angle(FC, ceLink.width, efLink.width); // FCE
 		
-		
+		var turns = 1;
+		if (((alpha1)%(Math.PI*4)) > 2*Math.PI){  // antras ratas prasideda
+			turns = 2;
+			tau = -tau;
+            k = -k;
+		}else if (((alpha1)%(Math.PI*2)) > 0){  // pirmas ratas prasideda
+			turns = 1;
+		}
 		
 		
 		//1  variantas
-		/*
 	    if (((alpha1)%(Math.PI*2)) > Math.PI){
 		// uz apacios veikima atsakingas
 			ctx.rotate(Math.PI + theta);
@@ -236,92 +237,11 @@
 			ctx.rotate(-(theta + tau) + Math.PI);
 			draw(bcLink, ctx); // BC
 			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
-			ctx.save();
-			ctx.rotate(-ebf);
-			beLink.width = BE;
-			draw(beLink,ctx);
-			ctx.restore();
-			
-			ctx.save();
-			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
-			draw(efLink,ctx);   // EF
-			ctx.restore();
-	
-			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx); // CE piesia
-		
-		}
-		*/
-		
-        // 2 var
-		 if (((alpha1)%(Math.PI*2)) > Math.PI){
-		   if(turns == 2){
-				// uz apacios veikima atsakingas
-			ctx.rotate(Math.PI + theta);
-			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
-		
-			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(tau);	///////// speju negeras kampas
-		
-		 	draw(bcLink, ctx);  // BC
-			ctx.save();
-			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
-			ctx.save();
-			ctx.rotate(-ebf);
-			beLink.width = BE;
-			draw(beLink,ctx);
-			ctx.restore();
-			
-			ctx.save();
-			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
-			draw(efLink,ctx);   // EF
-			ctx.restore();
-	
-			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx); // CE piesia
-		   }else{
-			ctx.rotate(Math.PI + theta);
-			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
-		
-			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(-tau);	///////// speju negeras kampas
-		
-		 	draw(bcLink, ctx);  // BC
-			ctx.save();
-			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
-			ctx.save();
-			ctx.rotate(-ebf);
-			beLink.width = BE;
-			draw(beLink,ctx);
-			ctx.restore();
-			
-			ctx.save();
-			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
-			draw(efLink,ctx);   // EF
-			ctx.restore();
-	
-			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx); // CE piesia
-		   }
-		}else{ // virsaus veikimas
-		    ctx.save();
-		    ctx.rotate(Math.PI - theta); //PI - theta
-			bdLink.width = BD;
-		   	//draw(bdLink, ctx);// BD piesia
-			ctx.restore();
-			ctx.rotate(-(theta + tau) + Math.PI);
-			draw(bcLink, ctx); // BC
-			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
+			/*
+			ctx.translate(bcLink.width, 0);
+            ctx.rotate(k); //BCD
+            draw(cdLink, ctx);//CD 
+			*/
 			ctx.save();
 			ctx.rotate(-ebf);
 			beLink.width = BE;
@@ -340,189 +260,36 @@
 		
 		}
 		
-		
-    // 3 var virsus kaip apacia
-	/*
-		if (((alpha1)%(Math.PI*2)) > Math.PI){
-		// uz apacios veikima atsakingas
-			ctx.rotate(Math.PI + theta);
-			bdLink.width = BD; // galim priskirti kadangi, niekam nera priskirtas
-		
-			//draw(bdLink, ctx); // zalia BD piesia
-			ctx.rotate(-tau);	///////// speju negeras kampas
-		
-		 	draw(bcLink, ctx);  // BC
-			ctx.save();
-			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
-			ctx.save();
-			ctx.rotate(-ebf);
-			beLink.width = BE;
-			draw(beLink,ctx);
-			ctx.restore();
-			
-			ctx.save();
-			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
-			draw(efLink,ctx);   // EF
-			ctx.restore();
-	
-			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx); // CE piesia
-
-		}else{ // virsaus veikimas
-		    //ctx.save();
-		    ctx.rotate(theta); //PI - theta
-			bdLink.width = BD;
-		   	draw(bdLink, ctx);// BD piesia
-		   	draw(bdLink, ctx);// BD piesia
-			//ctx.restore();
-			ctx.rotate(tau);
-			draw(bcLink, ctx); // BC
-			draw(bfLink,ctx);       // BF (turetu buti reguliuojamas)
-			
-			ctx.save();
-			ctx.rotate(-ebf);
-			beLink.width = BE;
-			draw(beLink,ctx);
-			ctx.restore();
-			
-			ctx.save();
-			ctx.translate(bfLink.width,0);
-			ctx.rotate(-Math.PI/2);
-			draw(efLink,ctx);   // EF
-			ctx.restore();
-	
-			ctx.translate(bcLink.width,0);
-			ctx.rotate(Math.PI + fce);
-            draw(ceLink, ctx); // CE piesia
-		
-		}
-     */   
+   
 		ctx.restore();  // M0 [M0]		
 		
         ctx.restore(); // M1 [M0] 
         draw(adLink, ctx); // AD
-        
-		//1var 
-		/*
-		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
-			//console.log("PSI" + psi);
-		    var psi = Math.PI + (beta - delta);
-		    psi = -psi;
-			ctx.translate(adLink.width, 0);
-			ctx.rotate(psi);
-			draw(cdLink, ctx); // DC
-		}else{ // virsus
-			// DC piesimas
-			var psi = Math.PI - beta - delta;
-			psi = -psi;
-			ctx.translate(adLink.width, 0);
-			ctx.rotate(psi);
-			draw(cdLink, ctx); // DC
-	    }
-		*/
 		
-		// 2 var 
-		
-		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
-			//console.log("PSI" + psi);
-			if(turns == 2){
-				var psi = Math.PI - (beta + delta);
-				psi = -psi;
-				ctx.translate(adLink.width, 0);
-				ctx.rotate(-psi);
-				draw(cdLink, ctx); // DC
-			}else{
-				var psi = Math.PI + (beta - delta);
-				psi = -psi;
-				ctx.translate(adLink.width, 0);
-				ctx.rotate(psi);
-				draw(cdLink, ctx); // DC
-			}
-		}else{ // virsus
-			// DC piesimas
-			var psi = Math.PI - beta - delta;
-			psi = -psi;
-			ctx.translate(adLink.width, 0);
-			ctx.rotate(psi);
-			draw(cdLink, ctx); // DC
-	    }
-		
-		
-		// 3 var virsus kaip apacia
-		/*
-		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
-			//console.log("PSI" + psi);
-		    var psi = Math.PI + (beta - delta);
-		    psi = -psi;
-			ctx.translate(adLink.width, 0);
-			ctx.rotate(psi);
-			draw(cdLink, ctx); // DC
-		}else{ // virsus
-			// DC piesimas
-			var psi = Math.PI - (beta + delta);
-			psi = -psi;
-			ctx.translate(adLink.width, 0);
-			ctx.rotate(psi);
-			draw(cdLink, ctx); // DC
-	    }
-	*/
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
 		
 		
 		
-		var cornerCBE = calc(ceLink,bcLink,beLink);
-		// 1 variantas
-		/*
-		if (((alpha1)%(Math.PI*2)) > Math.PI){
-		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
-			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-		}else{
-			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-		}
-		*/
+		var cornerCBE = calc(ceLink,bcLink,beLink);		
 		
-		// 2 variantas
-		
+		// Kreives ispiesimo kampai
 		if (((alpha1)%(Math.PI*2)) > Math.PI){
-             if(turns == 2){
-				pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
-				pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta + tau - cornerCBE) * beLink.width);
-             }else{
 				pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-			    pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-             }			 
+			    pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);			 
 		}else{
 			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
 		}
 		
-		// 3 variantas
-		/*
-		if (((alpha1)%(Math.PI*2)) > Math.PI){
-		/// Math.PI+theta+beta-Math.PI+charlie blogai, bet kazkoki apskritima nupiesia
-			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin( -Math.PI/180*t + Math.PI + theta - tau - cornerCBE) * beLink.width);
-		}else{
-			 pathOfCornerCrossing.push(Math.cos(-Math.PI/180*t) * abLink.width + Math.cos(-Math.PI/180*t -(theta + tau) + Math.PI - cornerCBE) * beLink.width);
-			 pathOfCornerCrossing.push(Math.sin(-Math.PI/180*t) * abLink.width + Math.sin(-Math.PI/180*t -(theta + tau) + Math.PI  - cornerCBE) * beLink.width);
-		}*/
-		
-		if(pathOfCornerCrossing.length > 500){
+		if(pathOfCornerCrossing.length > 5000){ // 500 ispiesimo tasku sk.
           pathOfCornerCrossing.reverse();
           pathOfCornerCrossing.pop();
           pathOfCornerCrossing.pop();
           pathOfCornerCrossing.reverse();
         }
 		drawPath(pathOfCornerCrossing, ctx, true);
-		
-		ctx.restore();
-				
+			
         requestAnimFrame(function() {
           animate(abLink, bcLink, cdLink, adLink, bdLink, efLink, beLink, ceLink, bfLink, canvas, ctx, startTime);
         });
@@ -636,6 +403,3 @@
     </script>
 </body>
 </html>
-
-
-
