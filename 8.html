@@ -260,11 +260,42 @@
 		
 		}
 		
-   
 		ctx.restore();  // M0 [M0]		
 		
         ctx.restore(); // M1 [M0] 
         draw(adLink, ctx); // AD
+		
+		if (((alpha1)%(Math.PI*2)) > Math.PI){ //apacioje AB
+			//console.log("PSI" + psi);
+			if(turns == 2){
+				var psi = Math.PI - (beta + delta);
+				psi = -psi;
+				ctx.translate(adLink.width, 0);
+				ctx.rotate(-psi);
+				draw(cdLink, ctx); // DC
+			}else{
+				var psi = Math.PI + (beta - delta);
+				psi = -psi;
+				ctx.translate(adLink.width, 0);
+				ctx.rotate(psi);
+				draw(cdLink, ctx); // DC
+			}
+		}else{ // virsus
+			// DC piesimas
+			if(turns == 2){
+				var psi = beta - delta + Math.PI;
+				//psi = -psi;
+				ctx.translate(adLink.width, 0);
+				ctx.rotate(psi);
+				draw(cdLink, ctx); // DC
+			}else{
+				var psi = Math.PI - beta - delta;
+				psi = -psi;
+				ctx.translate(adLink.width, 0);
+				ctx.rotate(psi);
+				draw(cdLink, ctx); // DC
+			}
+	    }
 		
         ctx.restore(); // M0 [] 
         ctx.restore(); // M0 [] 
