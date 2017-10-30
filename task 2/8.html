@@ -52,8 +52,7 @@
     var scale = 1;
     var wallThick = 1;
     var wallHight = 10;
-	var SPEED = 0.01;
-
+	
     init();
     animate();
 
@@ -136,10 +135,10 @@
 		
 		function initCube() {
 			 // create a cube
-			cube = createMesh(new THREE.CubeGeometry(5, 5, 5));
+			cube = createMesh(new THREE.CubeGeometry(5, 5, 5,2,2,2));
 			cube.position.x=0;
 			cube.position.y=5;
-			cube.position.z=9;
+			cube.position.z=10;
 			scene.add(cube);
         }
 		
