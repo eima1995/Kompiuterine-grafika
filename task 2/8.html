@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kompiuterinė grafika 2 užduotis</title>
+    <title>three.js webgl - trackball controls</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -23,11 +23,10 @@
             top: 10px;
             width: 100%;
             padding: 50px;
-
         }
 
         a {
-            color: brown;
+            color: red;
         }
     </style>
 </head>
@@ -44,15 +43,13 @@
 <script src="data.js"></script>
 
 <script>
-
     if (!Detector.webgl) Detector.addGetWebGLMessage();
     var container, stats;
     var camera, controls, scene, renderer;
-	var cube;
-    var scale = 1;
-    var wallThick = 1;
-    var wallHight = 10;
-	
+    var wallThick = 3;
+    var wallHight = 25;
+    var explosiveStrength = 0;
+
     init();
     animate();
 
@@ -75,25 +72,22 @@
 
         // world
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x9999ff);
-//        scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+        scene.background = new THREE.Color(0xcccccc);
+        scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
         var wall = {};
         var minX = 100;
         var minY = 100;
         var maxX = 1;
         var maxY = 1;
-        var wallMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-        var wallMaterial2 = new THREE.MeshLambertMaterial({color: 0x433722});
+        var wallMaterial = new THREE.MeshLambertMaterial({color: 'grey'});
+        var wallMaterial2 = new THREE.MeshLambertMaterial({color: 'green'});
         for (var i = 0; i < data.maze.line.length; i++) {
 //        for (var i = 0; i < 100; i++) {
-            var x1 = data.maze.line[i]["-x1"] - 2;
-            var x2 = data.maze.line[i]["-x2"] - 2;
-            var y1 = data.maze.line[i]["-y1"] - 2;
-            var y2 = data.maze.line[i]["-y2"] - 2;
-            var x = x2 - x1;
-            var y = y2 - y1;
-
+            var x1 = data.maze.line[i]["-x1"] - 10;
+            var x2 = data.maze.line[i]["-x2"] - 10;
+            var y1 = data.maze.line[i]["-y1"] - 10;
+            var y2 = data.maze.line[i]["-y2"] - 10;
             if (x1 < minX) {
                 minX = x1;
             }
@@ -108,73 +102,103 @@
             }
         }
         for (var i = 0; i < data.maze.line.length; i++) {
-            var x1 = data.maze.line[i]["-x1"] - 2;
-            var x2 = data.maze.line[i]["-x2"] - 2;
-            var y1 = data.maze.line[i]["-y1"] - 2;
-            var y2 = data.maze.line[i]["-y2"] - 2;
+            var x1 = data.maze.line[i]["-x1"] - 10;
+            var x2 = data.maze.line[i]["-x2"] - 10;
+            var y1 = data.maze.line[i]["-y1"] - 10;
+            var y2 = data.maze.line[i]["-y2"] - 10;
             var x = x2 - x1;
             var y = y2 - y1;
             if (y === 0) {
                 var geometry = new THREE.BoxGeometry(x, wallHight, wallThick);
-                console.log('added');
                 wall[i] = new THREE.Mesh(geometry, wallMaterial);
                 wall[i].position.set(-maxX / 2 + x1 + x / 2, wallHight / 2, -maxY / 2 + y1 + wallThick / 2);
+                wall[i].castShadow = true;
                 scene.add(wall[i]);
             }
             if (x === 0) {
-                var geometry = new THREE.BoxGeometry(wallThick, wallHight, y+wallThick);
-                console.log('added');
+                var geometry = new THREE.BoxGeometry(wallThick, wallHight, y + wallThick);
                 wall[i] = new THREE.Mesh(geometry, wallMaterial);
-                wall[i].position.set(-maxX / 2 + x1 + wallThick / 2, wallHight / 2, -maxY / 2 + y1 + (y+wallThick) / 2);
+                wall[i].position.set(-maxX / 2 + x1 + wallThick / 2, wallHight / 2, -maxY / 2 + y1 + (y + wallThick) / 2);
+                wall[i].castShadow = true;
                 scene.add(wall[i]);
             }
-			
-			initCube();
             console.log(x, y);
         }
-		
-		function initCube() {
-			 // create a cube
-			cube = createMesh(new THREE.CubeGeometry(5, 5, 5,2,2,2));
-			cube.position.x=0;
-			cube.position.y=5;
-			cube.position.z=10;
-			scene.add(cube);
+/*
+        tetGeometry = new THREE.TetrahedronGeometry(7, 2);
+        var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
+        tetMaterial.side = THREE.DoubleSide;
+        tetArray = {};
+        for (i = 0; i < tetGeometry.faces.length; i++) {
+            geometry3 = new THREE.Geometry();
+            geometry3.vertices.push(
+                tetGeometry.faces[i].vertexNormals[0].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+                tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+                tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal))
+            );
+            geometry3.faces.push(new THREE.Face3(0, 1, 2));
+            geometry3.scale(10, 10, 10);
+            tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
+            scene.add(tetArray[i]);
         }
+*/
+//        var from = new THREE.Vector3( 0, 0, 0);
+//        var to = new THREE.Vector3( 0.5, 0.5, 0.5);
+//        var direction = to.clone().sub(from);
+//        var length = direction.length();
+//        var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, 20, 0xff0000 );
+//        scene.add( arrowHelper );
+//        tet.castShadow = true; //default is false
+
+			tetGeometry = new THREE.OctahedronGeometry(1, 2);
+			var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
+			tetMaterial.side = THREE.DoubleSide;
+			tetArray = {};
+			//console.log(tetGeometry.faces.length);
+			//scene.add(new THREE.Mesh(tetGeometry, tetMaterial));
+			for (i = 0; i < tetGeometry.faces.length; i++) {
+				geometry3 = new THREE.Geometry();
+				geometry3.vertices.push(
+				tetGeometry.faces[i].vertexNormals[0].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+				tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+				tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal)));
+				geometry3.faces.push(new THREE.Face3(0, 1, 2));
+				geometry3.scale(10, 10, 10);
+				tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
+				scene.add(tetArray[i]);
+			}
 		
-		
-		function createMesh(geom) {
-            // assign two materials
-            var meshMaterial = new THREE.MeshNormalMaterial();
-            meshMaterial.side = THREE.DoubleSide;
-            var wireFrameMat = new THREE.MeshBasicMaterial();
-            wireFrameMat.wireframe = true;
-            // create a multimaterial
-            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial, wireFrameMat]);
-            return mesh;
-        }
-		
-        var floor = initFloor(maxX, maxY, 'blue');
-        scene.add(floor);
-//        camera.position.set(0, maxY , 0);
-//        camera.lookAt(new THREE.Vector3(0, -1, 0));
-
-        // lights
-        var light = new THREE.DirectionalLight(0xff9900);
-        light.position.set(150, 150, 150);
-        scene.add(light);
-
-        var light = new THREE.DirectionalLight(0xff9900);
-        light.position.set(155, 155, 155);
-        scene.add(light);
-
-        var light = new THREE.AmbientLight(0x9999ff);
-        scene.add(light);
+		/*
+		cubeFaces.forEach(function (element) {
+			var elementVelocity = new THREE.Vector3();
+            elementVelocity.x = getAxisVelocity(element.position.x);
+            elementVelocity.y = getAxisVelocity(element.position.y);
+            elementVelocity.z = getAxisVelocity(element.position.z);
+            faceVelocities.push(elementVelocity);
+            pivot.add(element);
+        }, this);
+            pivot.position.x = posx;
+            pivot.position.y = posy;
+            pivot.position.z = posz;
+            scene.add(pivot);
+		*/	
+        var floor = initFloor(maxX, maxY, 'brown');
+        scene.add(floor[0]);
+        scene.add(floor[1]);
 
 
-        // renderer
-        renderer = new THREE.WebGLRenderer({antialias: true});
-		//renderer.setClearColor(0x000000);
+        var ambientLight = new THREE.AmbientLight(0x404040, 2);
+        scene.add(ambientLight);
+
+        pointLight = new THREE.PointLight('grey', 1, 400);
+        pointLight.position.set(camera.position.x, camera.position.y, camera.position.z);
+        pointLight.castShadow = true;
+        scene.add(pointLight);
+
+
+        renderer = new THREE.WebGLRenderer({antialias: false});
+//        renderer.shadowMap.enabled = true;
+//        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -199,22 +223,83 @@
 
     function animate() {
         requestAnimationFrame(animate);
+        render();
         controls.update();
     }
-
-    function render() {
-        renderer.render(scene, camera);
-        stats.update();
+ 
+    var delay = 0;
+    function updateExplosive() {
+        if (explosiveStrength < 1000) {
+            explosiveStrength += 3 * delay;
+			delay++;
+			for (i = 0; i < tetGeometry.faces.length; i++) {
+				tetArray[i].geometry.vertices[0] = addVectors(tetGeometry.faces[i].vertexNormals[0], mult(explosiveStrength, tetGeometry.faces[i].normal));
+				tetArray[i].geometry.vertices[1] = addVectors(tetGeometry.faces[i].vertexNormals[1], mult(explosiveStrength, tetGeometry.faces[i].normal));
+				tetArray[i].geometry.vertices[2] = addVectors(tetGeometry.faces[i].vertexNormals[2], mult(explosiveStrength, tetGeometry.faces[i].normal));
+				tetArray[i].geometry.elementsNeedUpdate = true;
+			}
+			
+        }
     }
-		
-    function initFloor(maxX, maxY, color) {
-        var floor = new THREE.Mesh(
-            new THREE.PlaneGeometry(maxX, maxY+wallThick*2, maxX, maxY),
-            new THREE.MeshLambertMaterial({color: 'brown'})
-        );
 
-        floor.position.set(0, 0, 0);
-        floor.rotation.x = -Math.PI / 2;
+	
+	function checkExp(){
+		if((camera.position.x < 100) && (camera.position.y < 100) && (camera.position.z < 100)){
+			return true;
+		}
+        return false;		
+	}
+	/*
+	function removeEntity() {
+	    for(i = 0; i < tetGeometry.faces.length; i++){
+			var selectedObject = scene.getObjectByName(tetArray[i]);
+		    scene.remove(selectedObject );
+		    animate();
+        }
+    }
+	*/
+	
+    function render() {
+	   console.log(camera.position);
+	   if(checkExp()){
+	    //console.log('salyga');
+		updateExplosive();
+		///removeEntity();
+	   }
+       pointLight.position.set(camera.position.x, camera.position.y, camera.position.z);
+       renderer.render(scene, camera);
+       stats.update();
+    }
+
+    function mult(a, vector) {
+        return new THREE.Vector3(vector.x * a, vector.y * a, vector.z * a)
+    }
+
+    function addVectors(vector1, vector2) {
+        return new THREE.Vector3(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z)
+    }
+
+    function initFloor(maxX, maxY, color) {
+        var floor = {};
+        floor[0] = new THREE.Mesh(
+            new THREE.PlaneGeometry(maxX, maxY + wallThick * 2, 2, 2),
+            new THREE.MeshLambertMaterial({color: 'white'})
+        );
+        floor[0].position.set(0, 0, 0);
+        floor[0].rotation.x = -Math.PI / 2;
+//        floor[0].lookAt(new THREE.Vector3(-0.1,1,0));
+//        floor.
+
+        floor[0].castShadow = false;
+        floor[0].receiveShadow = true;
+
+        floor[1] = new THREE.Mesh(
+            new THREE.PlaneGeometry(maxX, maxY + wallThick * 2, 2, 2),
+            new THREE.MeshLambertMaterial({color: 'white'})
+        );
+        floor[1].position.set(0, 0, 0);
+        floor[1].rotation.x = Math.PI / 2;
+
         return floor
     }
 
