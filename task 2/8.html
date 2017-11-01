@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>three.js webgl - trackball controls</title>
+    <title>Kompiuterinė grafika 2 užduotis</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
+</head>
+	<style>
         body {
             color: #000;
             font-family: Monospace;
@@ -22,15 +23,13 @@
             position: absolute;
             top: 10px;
             width: 100%;
-            padding: 50px;
+            padding: 5px;
         }
 
         a {
             color: red;
         }
     </style>
-</head>
-
 <body>
 <div id="container"></div>
 <div id="info">
@@ -46,19 +45,21 @@
     if (!Detector.webgl) Detector.addGetWebGLMessage();
     var container, stats;
     var camera, controls, scene, renderer;
-    var wallThick = 3;
-    var wallHight = 25;
+    var wallThick = 1;
+    var wallHight = 15;
     var explosiveStrength = 0;
 
     init();
     animate();
 
     function init() {
+	    // camera
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
         camera.position.z = 50;
         camera.position.y = 300;
         camera.lookAt(new THREE.Vector3(0, -1, 0));
 
+		// camera controls
         controls = new THREE.TrackballControls(camera);
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 6.2;
@@ -73,21 +74,22 @@
         // world
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0xcccccc);
-        scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-
+        //scene.fog = new THREE.FogExp2(0xcccccc, 0.002); nuimtas rūkas
+         
+		// maze
         var wall = {};
-        var minX = 100;
+        var minX = 100; // neaisku kam ???
         var minY = 100;
-        var maxX = 1;
+        var maxX = 1;  //grindu dydis
         var maxY = 1;
         var wallMaterial = new THREE.MeshLambertMaterial({color: 'grey'});
         var wallMaterial2 = new THREE.MeshLambertMaterial({color: 'green'});
+		
         for (var i = 0; i < data.maze.line.length; i++) {
-//        for (var i = 0; i < 100; i++) {
-            var x1 = data.maze.line[i]["-x1"] - 10;
-            var x2 = data.maze.line[i]["-x2"] - 10;
-            var y1 = data.maze.line[i]["-y1"] - 10;
-            var y2 = data.maze.line[i]["-y2"] - 10;
+            var x1 = data.maze.line[i]["-x1"] - 2;
+            var x2 = data.maze.line[i]["-x2"] - 2;
+            var y1 = data.maze.line[i]["-y1"] - 2;
+            var y2 = data.maze.line[i]["-y2"] - 2;
             if (x1 < minX) {
                 minX = x1;
             }
@@ -102,10 +104,10 @@
             }
         }
         for (var i = 0; i < data.maze.line.length; i++) {
-            var x1 = data.maze.line[i]["-x1"] - 10;
-            var x2 = data.maze.line[i]["-x2"] - 10;
-            var y1 = data.maze.line[i]["-y1"] - 10;
-            var y2 = data.maze.line[i]["-y2"] - 10;
+            var x1 = data.maze.line[i]["-x1"] - 2;
+            var x2 = data.maze.line[i]["-x2"] - 2;
+            var y1 = data.maze.line[i]["-y1"] - 2;
+            var y2 = data.maze.line[i]["-y2"] - 2;
             var x = x2 - x1;
             var y = y2 - y1;
             if (y === 0) {
@@ -124,69 +126,41 @@
             }
             console.log(x, y);
         }
-/*
-        tetGeometry = new THREE.TetrahedronGeometry(7, 2);
-        var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
-        tetMaterial.side = THREE.DoubleSide;
-        tetArray = {};
-        for (i = 0; i < tetGeometry.faces.length; i++) {
-            geometry3 = new THREE.Geometry();
-            geometry3.vertices.push(
-                tetGeometry.faces[i].vertexNormals[0].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
-                tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
-                tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal))
-            );
-            geometry3.faces.push(new THREE.Face3(0, 1, 2));
-            geometry3.scale(10, 10, 10);
-            tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
-            scene.add(tetArray[i]);
-        }
-*/
-//        var from = new THREE.Vector3( 0, 0, 0);
-//        var to = new THREE.Vector3( 0.5, 0.5, 0.5);
-//        var direction = to.clone().sub(from);
-//        var length = direction.length();
-//        var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, 20, 0xff0000 );
-//        scene.add( arrowHelper );
-//        tet.castShadow = true; //default is false
-
-			tetGeometry = new THREE.OctahedronGeometry(1, 2);
-			var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
-			tetMaterial.side = THREE.DoubleSide;
-			tetArray = {};
-			//console.log(tetGeometry.faces.length);
-			//scene.add(new THREE.Mesh(tetGeometry, tetMaterial));
-			for (i = 0; i < tetGeometry.faces.length; i++) {
-				geometry3 = new THREE.Geometry();
-				geometry3.vertices.push(
-				tetGeometry.faces[i].vertexNormals[0].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
-				tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
-				tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal)));
-				geometry3.faces.push(new THREE.Face3(0, 1, 2));
-				geometry3.scale(10, 10, 10);
-				tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
-				scene.add(tetArray[i]);
-			}
 		
-		/*
-		cubeFaces.forEach(function (element) {
-			var elementVelocity = new THREE.Vector3();
-            elementVelocity.x = getAxisVelocity(element.position.x);
-            elementVelocity.y = getAxisVelocity(element.position.y);
-            elementVelocity.z = getAxisVelocity(element.position.z);
-            faceVelocities.push(elementVelocity);
-            pivot.add(element);
-        }, this);
-            pivot.position.x = posx;
-            pivot.position.y = posy;
-            pivot.position.z = posz;
-            scene.add(pivot);
-		*/	
+		// figure
+		tetGeometry = new THREE.OctahedronGeometry(1, 2);
+		var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
+		tetMaterial.side = THREE.DoubleSide;
+		tetArray = {};
+		
+		for (i = 0; i < tetGeometry.faces.length; i++) {
+			geometry3 = new THREE.Geometry();
+			geometry3.vertices.push(
+			tetGeometry.faces[i].vertexNormals[0].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+			tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
+			tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal)));
+			geometry3.faces.push(new THREE.Face3(0, 1, 2));
+			geometry3.scale(10, 10, 10);
+			tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
+			scene.add(tetArray[i]);
+		}
+		
+		// kad matytusi figuros trikampiukai
+		explosiveStrength = 1;
+		for (i = 0; i < tetGeometry.faces.length; i++) {
+			tetArray[i].geometry.vertices[0] = addVectors(tetGeometry.faces[i].vertexNormals[0], mult(explosiveStrength, tetGeometry.faces[i].normal));
+			tetArray[i].geometry.vertices[1] = addVectors(tetGeometry.faces[i].vertexNormals[1], mult(explosiveStrength, tetGeometry.faces[i].normal));
+			tetArray[i].geometry.vertices[2] = addVectors(tetGeometry.faces[i].vertexNormals[2], mult(explosiveStrength, tetGeometry.faces[i].normal));
+			tetArray[i].geometry.elementsNeedUpdate = true;
+		}
+		
+		
+		// floor
         var floor = initFloor(maxX, maxY, 'brown');
         scene.add(floor[0]);
         scene.add(floor[1]);
 
-
+        // lights
         var ambientLight = new THREE.AmbientLight(0x404040, 2);
         scene.add(ambientLight);
 
@@ -195,8 +169,8 @@
         pointLight.castShadow = true;
         scene.add(pointLight);
 
-
-        renderer = new THREE.WebGLRenderer({antialias: false});
+        // renderer
+        renderer = new THREE.WebGLRenderer({antialias: true});
 //        renderer.shadowMap.enabled = true;
 //        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -204,8 +178,12 @@
 
         container = document.getElementById('container');
         container.appendChild(renderer.domElement);
-
+        
+        		
         stats = new Stats();
+		// Align top-left 
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
         container.appendChild(stats.dom);
 
         window.addEventListener('resize', onWindowResize, false);
@@ -223,14 +201,14 @@
 
     function animate() {
         requestAnimationFrame(animate);
-        render();
+        ///render();
         controls.update();
     }
  
     var delay = 0;
     function updateExplosive() {
-        if (explosiveStrength < 1000) {
-            explosiveStrength += 3 * delay;
+        if (explosiveStrength < 100000) {
+            explosiveStrength += 35 * delay;
 			delay++;
 			for (i = 0; i < tetGeometry.faces.length; i++) {
 				tetArray[i].geometry.vertices[0] = addVectors(tetGeometry.faces[i].vertexNormals[0], mult(explosiveStrength, tetGeometry.faces[i].normal));
@@ -249,22 +227,12 @@
 		}
         return false;		
 	}
-	/*
-	function removeEntity() {
-	    for(i = 0; i < tetGeometry.faces.length; i++){
-			var selectedObject = scene.getObjectByName(tetArray[i]);
-		    scene.remove(selectedObject );
-		    animate();
-        }
-    }
-	*/
 	
     function render() {
 	   console.log(camera.position);
+	   ///While cia jauciu del sprogimo reikes uzsukti ir viskas
 	   if(checkExp()){
-	    //console.log('salyga');
-		updateExplosive();
-		///removeEntity();
+	       updateExplosive();
 	   }
        pointLight.position.set(camera.position.x, camera.position.y, camera.position.z);
        renderer.render(scene, camera);
@@ -278,7 +246,9 @@
     function addVectors(vector1, vector2) {
         return new THREE.Vector3(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z)
     }
-
+    
+	
+	// Kam dvi grindis?????(Paziureti grindis kaip daryti)
     function initFloor(maxX, maxY, color) {
         var floor = {};
         floor[0] = new THREE.Mesh(
@@ -292,7 +262,6 @@
 
         floor[0].castShadow = false;
         floor[0].receiveShadow = true;
-
         floor[1] = new THREE.Mesh(
             new THREE.PlaneGeometry(maxX, maxY + wallThick * 2, 2, 2),
             new THREE.MeshLambertMaterial({color: 'white'})
