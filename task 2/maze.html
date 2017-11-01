@@ -131,7 +131,8 @@
 		
 		// figure
 		tetGeometry = new THREE.OctahedronGeometry(1, 2);
-		var tetMaterial = new THREE.MeshLambertMaterial({color: 'pink'});
+		//tetGeometry.position.z = 2.5;
+		var tetMaterial = new THREE.MeshLambertMaterial({color: 'blue'});
 		tetMaterial.side = THREE.DoubleSide;
 		tetArray = {};
 		
@@ -144,10 +145,14 @@
 			geometry3.faces.push(new THREE.Face3(0, 1, 2));
 			geometry3.scale(3, 3, 3);
 			tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
+			//geometry3.position.z = 2.5;
+			tetArray[i].position.y = 9;
+			tetArray[i].position.z = 10;
 			scene.add(tetArray[i]);
 		}
 		
 		// kad matytusi figuros trikampiukai
+		/*
 		explosiveStrength = 2;
 		for (i = 0; i < tetGeometry.faces.length; i++) {
 			tetArray[i].geometry.vertices[0] = addVectors(tetGeometry.faces[i].vertexNormals[0], mult(explosiveStrength, tetGeometry.faces[i].normal));
@@ -155,7 +160,7 @@
 			tetArray[i].geometry.vertices[2] = addVectors(tetGeometry.faces[i].vertexNormals[2], mult(explosiveStrength, tetGeometry.faces[i].normal));
 			tetArray[i].geometry.elementsNeedUpdate = true;
 		}
-		
+		*/
 		
 		// floor
         var floor = initFloor(maxX, maxY, 'brown');
@@ -264,13 +269,14 @@
 
         floor[0].castShadow = false;
         floor[0].receiveShadow = true;
+		
         floor[1] = new THREE.Mesh(
             new THREE.PlaneGeometry(maxX, maxY + wallThick * 2, 2, 2),
             new THREE.MeshLambertMaterial({color: 'white'})
         );
         floor[1].position.set(0, 0, 0);
         floor[1].rotation.x = Math.PI / 2;
-
+		
         return floor
     }
 
