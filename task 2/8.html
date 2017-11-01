@@ -48,13 +48,14 @@
     var wallThick = 1;
     var wallHight = 15;
     var explosiveStrength = 0;
+	var bluePoint 
 
     init();
     animate();
 
     function init() {
 	    // camera
-        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
         camera.position.z = 50;
         camera.position.y = 300;
         camera.lookAt(new THREE.Vector3(0, -1, 0));
@@ -70,6 +71,7 @@
         controls.dynamicDampingFactor = 0.3;
         controls.keys = [65, 83, 68];
         controls.addEventListener('change', render);
+
 
         // world
         scene = new THREE.Scene();
@@ -140,13 +142,13 @@
 			tetGeometry.faces[i].vertexNormals[1].add(mult(explosiveStrength, tetGeometry.faces[i].normal)),
 			tetGeometry.faces[i].vertexNormals[2].add(mult(explosiveStrength, tetGeometry.faces[i].normal)));
 			geometry3.faces.push(new THREE.Face3(0, 1, 2));
-			geometry3.scale(10, 10, 10);
+			geometry3.scale(3, 3, 3);
 			tetArray[i] = new THREE.Mesh(geometry3, tetMaterial);
 			scene.add(tetArray[i]);
 		}
 		
 		// kad matytusi figuros trikampiukai
-		explosiveStrength = 1;
+		explosiveStrength = 2;
 		for (i = 0; i < tetGeometry.faces.length; i++) {
 			tetArray[i].geometry.vertices[0] = addVectors(tetGeometry.faces[i].vertexNormals[0], mult(explosiveStrength, tetGeometry.faces[i].normal));
 			tetArray[i].geometry.vertices[1] = addVectors(tetGeometry.faces[i].vertexNormals[1], mult(explosiveStrength, tetGeometry.faces[i].normal));
@@ -161,18 +163,17 @@
         scene.add(floor[1]);
 
         // lights
-        var ambientLight = new THREE.AmbientLight(0x404040, 2);
+        var ambientLight = new THREE.AmbientLight(0x404040, 1); // antras parametras intesyvumas sviesos
         scene.add(ambientLight);
-
-        pointLight = new THREE.PointLight('grey', 1, 400);
-        pointLight.position.set(camera.position.x, camera.position.y, camera.position.z);
-        pointLight.castShadow = true;
-        scene.add(pointLight);
-
+		
+        bluePoint = new THREE.PointLight(0x0033ff, 3, 150, 2); //color, intensity, distance, decay
+		//bluePoint.position.set( 70, 5, 70 );
+		scene.add(bluePoint);
+		
         // renderer
         renderer = new THREE.WebGLRenderer({antialias: true});
-//        renderer.shadowMap.enabled = true;
-//        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+//      renderer.shadowMap.enabled = true;
+//      renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -201,8 +202,9 @@
 
     function animate() {
         requestAnimationFrame(animate);
-        ///render();
+       // render();
         controls.update();
+	
     }
  
     var delay = 0;
@@ -234,7 +236,7 @@
 	   if(checkExp()){
 	       updateExplosive();
 	   }
-       pointLight.position.set(camera.position.x, camera.position.y, camera.position.z);
+	   bluePoint.position.set(camera.position.x, camera.position.y, camera.position.z);
        renderer.render(scene, camera);
        stats.update();
     }

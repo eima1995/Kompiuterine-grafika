@@ -1,0 +1,18 @@
+// tekst faila nuskaito ir paima koord
+// arba uzloadinti faila (json)
+// sukurti tinkleli tada playjon mesh naudoti
+// ir storas sienas ir plonas padaryt
+// ilenda siena viena i kita arba galima daryt skirtingu auksciu
+// suderinta orientacija double side mesh
+// del apsvietimo
+// kelios sienos lygiagrecios, tada apsviecia viska, ko nereik
+// apriboti sviesos skleidimo atstuma arba apriboti sviesa, pvz kambary sviesa dega. tada kambaris dedamas i bloka kuriamas obj.
+// detalumo lygiai, kur norodyt boxe 4,4,4 jei kubas
+// paziureti is visu pusiu ir prizuminus, tai tas kubas ar kas turi subiret i trikampius
+// sukurti tiek obj, kiek yra trikampiu. pradzioj is kubo istraukti trikampiu sarasa 24*16 pagal kiekviena trikampi sukurti atskira obj ir deorientuoti
+// atsitiktinai sukam ir judinam is centro i isore trikampiukus, keiciam pozicija
+// pozicijos keitimas isskaiciuoti svorio centra, pasukti apie centra ir keisti centra, position
+// atstuma(vektoriu) didinti
+// po to dngsta is ekrano
+// chapter09->trackball controls
+// antra lapkricio sav kolis per pratybas
